@@ -14,6 +14,7 @@ This is not a license to overbuild. The output should be more correct, better bo
 ## Operating Rules
 
 - Start from the repository's actual architecture, docs, tests, release process, and current maturity.
+- Default to the simplest architecture and implementation that fully satisfies the proven requirements. Prefer clear, conventional, maintainable code and existing components over new abstractions, services, dependencies, indirection, or operational machinery. Introduce complexity only when a concrete correctness, security, performance, scalability, compatibility, or operability requirement makes the simpler approach insufficient; state that requirement and keep the added complexity narrowly bounded.
 - Treat ambiguous roadmap wording as a design problem: define the concrete acceptance criteria before editing.
 - Build a requirement inventory before implementation. Extract every explicit user request, roadmap bullet, checklist item, linked doc requirement, release-process expectation, and "where relevant" documentation/update obligation into a working checklist. Do not collapse separate deliverables into a broad label.
 - Do not mark an item complete because a scaffold, placeholder, TODO, starter template, or documentation-only note exists. Count it complete only when it is usable by the intended operator/developer in the repository's release context, or explicitly mark it as a documented limitation accepted by the user.
@@ -30,6 +31,7 @@ This is not a license to overbuild. The output should be more correct, better bo
 
 Before editing, inspect the relevant modules and tests. For each non-trivial change, decide:
 
+- **Simplicity:** What is the least complex approach that satisfies the requirements, and what concrete evidence justifies any added abstraction or operational burden?
 - **Invariant:** What must always remain true?
 - **Boundary:** Which component owns the behavior?
 - **Failure path:** What happens on rejection, timeout, partial failure, or bad input?
@@ -61,8 +63,9 @@ Run a self-review before merge using this order:
 4. Protocol/API compatibility and versioning impact.
 5. Failure behavior, rollback, idempotency, and cleanup.
 6. Test coverage against behavior, not only implementation details.
-7. Documentation and changelog accuracy.
-8. Accidental generated files, local artifacts, or unrelated diffs.
+7. Simplicity and maintainability: unnecessary abstraction, duplication, dependencies, moving parts, configuration, and operator burden.
+8. Documentation and changelog accuracy.
+9. Accidental generated files, local artifacts, or unrelated diffs.
 
 Material findings must be fixed before merge unless explicitly documented as accepted limitations.
 

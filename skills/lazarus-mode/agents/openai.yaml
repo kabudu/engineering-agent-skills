@@ -1,4 +1,4 @@
 interface:
   display_name: "Lazarus Mode"
   short_description: "Expert engineering rigor for implementation and release work."
-  default_prompt: "Use Lazarus Mode to approach this work with expert-level architecture, security, testing, and release discipline."
+  default_prompt: "Use Lazarus Mode to approach this work with the simplest maintainable architecture that meets the requirements, plus expert-level security, testing, and release discipline."
