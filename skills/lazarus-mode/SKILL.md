@@ -1,6 +1,6 @@
 ---
 name: lazarus-mode
-description: Use when the user asks for expert-level engineering judgment, "X mode", seasoned/staff/principal engineer standards, robust architecture, security/performance/reliability/scalability scrutiny, optimization review, or rigorous implementation and release discipline. Applies as a rigor overlay for code design, testing, reviews, documentation, and lightweight roadmap releases. Do not use to perform real package/product publishing unless the repository explicitly supports that release mode.
+description: Use when the user asks for expert-level engineering judgment, "X mode", seasoned/staff/principal engineer standards, robust architecture, security/performance/reliability/scalability scrutiny, optimization review, rigorous implementation and release discipline, or when combining implementation work with implement-release-flow. Applies as a rigor overlay for code design, testing, reviews, documentation, and lightweight roadmap releases. Do not use to perform real package/product publishing unless the repository explicitly supports that release mode.
 ---
 
 # Lazarus Mode
@@ -20,6 +20,7 @@ This is not a license to overbuild. The output should be more correct, better bo
 - Do not mark an item complete because a scaffold, placeholder, TODO, starter template, or documentation-only note exists. Count it complete only when it is usable by the intended operator/developer in the repository's release context, or explicitly mark it as a documented limitation accepted by the user.
 - Prefer doing the difficult-but-bounded work over narrowing the requirement to the easy subset. If a requirement is feasible within the current repo and requested release scope, implement it; if it is not feasible, state the blocker before merge/release and leave the item unchecked or documented as deferred.
 - Missing local packages, SDKs, runtimes, toolchains, or framework backends are not blockers by themselves. When they are reasonably installable and relevant to the requested proof, first attempt a bounded installation in the project-appropriate local environment, with disk/cache hygiene and source-control ignores, then validate with the real backend. This explicitly includes ML packages and accelerator stacks such as PyTorch, MLX, NumPy/SciPy, Metal/Xcode command line tools, and benchmark/test dependencies. Do not skip a requested baseline, validation path, or backend merely because the package is absent at first inspection. Treat unavailability as a blocker only after installation or access attempts fail for concrete environmental reasons, and record the exact failed command or missing system permission.
+- For new projects, default to the latest stable language edition, toolchain, dependency versions, and security posture that the local/current stable ecosystem supports. Verify the active toolchain before downgrading editions or pinning older dependency families. If compatibility requires an older edition, runtime, package version, or insecure/deprecated dependency, document the concrete constraint and validation evidence instead of silently choosing the older default.
 - Prefer narrow, production-shaped increments over broad speculative abstractions.
 - Identify failure modes before choosing the implementation: rollback, partial writes, stale state, concurrency, unbounded work, timeouts, resource exhaustion, compatibility, security, data loss, privacy, and user-visible behavior.
 - Treat performance and scalability as correctness constraints for production paths: avoid unbounded fan-out, serial network loops, startup blockers, runaway retries, excessive memory growth, and hidden latency cliffs.
@@ -85,7 +86,7 @@ If validation cannot run, document the exact command, failure, and whether the b
 
 When Lazarus Mode is used alongside a repository's release workflow:
 
-- Follow the repository's documented branch, PR, CI, merge, changelog, tag, and cleanup sequencing.
+- Follow the repository's documented branch, PR, CI, merge, changelog, tag, and cleanup sequencing. When `implement-release-flow` applies, use it to drive that sequencing.
 - Use Lazarus Mode as the quality gate inside each phase: planning, implementation, review, validation, release notes, and final risk statement.
 - Treat the release checklist as a product contract: binaries, package manifests, deployment examples, docs, roadmap status, and release artifacts must agree with each other.
 - Do not skip PR review just because local tests pass.
