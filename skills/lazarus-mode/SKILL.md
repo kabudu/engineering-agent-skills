@@ -76,6 +76,20 @@ Run the strongest practical validation for the blast radius:
 
 - Focused unit tests for changed logic.
 - Integration/smoke tests for transaction, protocol, runtime, or release behavior.
+- When creating a test harness for a user-facing or operational workflow, make the
+  harness exercise the real end-to-end lifecycle exactly as the system is used:
+  enter changes through the normal public/admin/API boundary; verify persistence;
+  run the actual queue, worker, scheduled job, indexing, cache, or asynchronous
+  convergence path; read the outcome through the normal customer/operator-facing
+  boundary; and compare observed behavior with independently derived expectations.
+  Snapshot affected state first, restore it in a `finally`/equivalent cleanup path,
+  bound all waits with useful diagnostics, and report each lifecycle phase.
+- Treat direct database, queue, cache, or search-engine inspection as additional
+  evidence and troubleshooting support, not a substitute for the end-to-end path.
+  Keep focused unit and integration tests in addition to the lifecycle harness.
+  If an environment cannot exercise a required real boundary, label the harness
+  accurately as an integration/simulation harness and report the missing E2E proof;
+  do not silently narrow the meaning of "test harness" or "end-to-end."
 - Performance-shaped tests or checks for changed background jobs, discovery/probing loops, retry paths, caches, queues, streaming paths, and other potentially unbounded or latency-sensitive work.
 - Full test suites when the change touches shared protocol, CLI, schema, or release surfaces.
 - CI must pass before merge when a PR workflow exists.
