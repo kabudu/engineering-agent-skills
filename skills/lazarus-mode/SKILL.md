@@ -42,6 +42,13 @@ Before editing, inspect the relevant modules and tests. For each non-trivial cha
 
 Implementation should be scoped, but not superficial. If the smallest change would create a misleading or unsafe behavior, widen the scope enough to fix the actual boundary.
 
+## UI Conventions
+
+- Never use browser-native `alert()`, `confirm()`, or `prompt()` in a product interface. Use the product's accessible, on-brand modal/dialog and toast components so wording, visual hierarchy, keyboard behavior, focus management, validation, loading states, and destructive-action emphasis remain consistent.
+- Confirmation dialogs must name the action and consequence, use explicit action labels instead of generic "OK", provide a safe cancel path, and visually distinguish destructive actions.
+- Input dialogs must use labelled fields, inline validation, appropriate input controls, and user-friendly failure feedback. Use toasts for non-blocking outcomes and reserve modals for decisions or input that must block the current action.
+- During UI reviews, search the relevant source tree for native dialog calls and treat any remaining product-surface usage as an incomplete migration.
+
 ## Completion Gate
 
 Before claiming completion, merging, or releasing, perform a requirement-by-requirement audit:
