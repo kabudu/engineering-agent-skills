@@ -76,7 +76,21 @@ Run a self-review before merge using this order:
 8. Documentation and changelog accuracy.
 9. Accidental generated files, local artifacts, or unrelated diffs.
 
-Material findings must be fixed before merge unless explicitly documented as accepted limitations.
+Material findings should be fixed before merge unless explicitly documented as accepted limitations. Do not treat every improvement as material.
+
+### GitHub Code Review Style
+
+Keep GitHub reviews practical, brief, and proportionate to the change.
+
+- Use plain, neutral language. Avoid dramatic wording, colourful phrases, grand claims, and unnecessary engineering jargon.
+- State the problem, its likely effect, and the smallest useful fix. Usually keep each comment to one short paragraph of two to four sentences.
+- Do not write an essay for a simple code pattern. Omit background the author can already see from the diff.
+- Leave a comment only when it gives the author something useful to change. Do not restate the diff or add speculative concerns without a credible failure case.
+- Request changes only for a clear correctness, security, data-loss, compatibility, or serious operational risk. Use a non-blocking comment for worthwhile but lower-risk improvements.
+- Do not block a PR only for naming, formatting, wording, minor duplication, optional refactoring, or missing tests for straightforward low-risk code. Mention these only when they create a realistic maintenance or regression risk.
+- Match the repository's normal review culture. Prefer the least strict response that still communicates the risk clearly.
+- If there are no meaningful findings, do not invent one. Approve or report that no feedback needs to be addressed.
+- Keep the overall review summary to one or two short sentences. Do not repeat every inline comment.
 
 ## Validation Standard
 
