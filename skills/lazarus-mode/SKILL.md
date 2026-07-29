@@ -82,6 +82,10 @@ Material findings should be fixed before merge unless explicitly documented as a
 
 Keep GitHub reviews practical, brief, and proportionate to the change.
 
+- Before reporting or posting findings, inspect all existing PR feedback: conversation comments, submitted review bodies, inline threads (including resolved and outdated threads), and collapsed or suppressed findings included in bot review summaries.
+- Build a semantic inventory of existing findings by failure mode, affected behavior, and requested remedy. Treat a candidate as already covered when those materially match, even if its wording, severity, location, author, or presentation differs.
+- Do not repeat an already-covered finding in the review output, create another inline comment for it, or use it as the basis for a new request-changes review. If useful, state only that existing feedback already covers the issue and focus the review on unique findings.
+- Re-check existing feedback immediately before posting a review so comments added during the review are also deduplicated.
 - Use plain, neutral language. Avoid dramatic wording, colourful phrases, grand claims, and unnecessary engineering jargon.
 - State the problem, its likely effect, and the smallest useful fix. Usually keep each comment to one short paragraph of two to four sentences.
 - Do not write an essay for a simple code pattern. Omit background the author can already see from the diff.
