@@ -1,8 +1,8 @@
-# Codex Skills
+# AI Skills
 
-Reusable Codex skills for engineering rigor, workflow discipline, and AI-assisted development.
+Reusable agent skills for engineering rigour, workflow discipline, and AI-assisted development.
 
-This repository is a public catalog of portable Codex skills. Each skill is kept in its own folder under `skills/` so it can be copied or symlinked into `~/.codex/skills` on any machine running Codex App.
+This repository is a public catalogue of portable skills that follow the open Agent Skills format. Each skill lives in its own folder under `skills/` and can be installed in compatible tools such as Codex, Claude Code, and Cursor.
 
 ## Skills
 
@@ -10,44 +10,54 @@ This repository is a public catalog of portable Codex skills. Each skill is kept
 | --- | --- |
 | [`lazarus-mode`](skills/lazarus-mode) | Expert engineering rigor for implementation, review, testing, documentation, and release work. |
 
-## Quick Install
-
-Clone this repository on a machine that runs Codex:
+## Clone the repository
 
 ```sh
-git clone git@github.com:kabudu/codex-skills.git
-cd codex-skills
+git clone git@github.com:kabudu/engineering-agent-skills.git
+cd engineering-agent-skills
 ```
 
-Install a skill by symlinking it into Codex's skills directory:
+The examples below use symlinks where the host supports them so that a later `git pull` updates every installed skill automatically.
+
+## Install with Codex
+
+Codex discovers personal skills in `~/.agents/skills` and supports symlinked skill folders.
 
 ```sh
-mkdir -p ~/.codex/skills
-ln -s "$PWD/skills/lazarus-mode" ~/.codex/skills/lazarus-mode
+mkdir -p ~/.agents/skills
+ln -s "$PWD/skills/lazarus-mode" ~/.agents/skills/lazarus-mode
 ```
 
-Or copy it instead if you do not want a symlink:
+Codex normally detects skill changes automatically. If the skill does not appear, restart Codex.
+
+## Install with Claude Code
+
+Claude Code discovers personal skills in `~/.claude/skills` and supports symlinked skill folders.
 
 ```sh
-mkdir -p ~/.codex/skills
-cp -R skills/lazarus-mode ~/.codex/skills/
+mkdir -p ~/.claude/skills
+ln -s "$PWD/skills/lazarus-mode" ~/.claude/skills/lazarus-mode
 ```
 
-Restart Codex App or open a fresh thread after installing a skill so Codex can discover it.
+Claude Code watches an existing skills directory for changes. If you created `~/.claude/skills` while Claude Code was running, restart it once.
+
+## Install with Cursor
+
+Cursor discovers personal skills in `~/.cursor/skills`:
+
+```sh
+mkdir -p ~/.cursor/skills
+ln -s "$PWD/skills/lazarus-mode" ~/.cursor/skills/lazarus-mode
+```
+
+Restart Cursor if the skill does not appear in its skills list.
 
 ## Updating
 
-If you installed with a symlink, update the repository and restart Codex App:
+Update the checkout to update every symlinked installation:
 
 ```sh
 git pull
-```
-
-If you copied a skill, pull the repository and copy that skill again:
-
-```sh
-git pull
-cp -R skills/lazarus-mode ~/.codex/skills/
 ```
 
 ## Adding Skills
@@ -72,7 +82,7 @@ skills/
       openai.yaml
 ```
 
-Each skill should live in its own folder under `skills/` with a `SKILL.md` entry point.
+Each skill must have a `SKILL.md` entry point with valid `name` and `description` frontmatter.
 
 ## License
 
