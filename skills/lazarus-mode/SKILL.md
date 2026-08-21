@@ -93,7 +93,7 @@ Keep GitHub reviews practical, brief, and proportionate to the change.
 - Request changes only for a clear correctness, security, data-loss, compatibility, or serious operational risk. Use a non-blocking comment for worthwhile but lower-risk improvements.
 - Do not block a PR only for naming, formatting, wording, minor duplication, optional refactoring, or missing tests for straightforward low-risk code. Mention these only when they create a realistic maintenance or regression risk.
 - Match the repository's normal review culture. Prefer the least strict response that still communicates the risk clearly.
-- If there are no meaningful findings, do not invent one. Approve or report that no feedback needs to be addressed.
+- If the user asks for a GitHub PR review and there are no actionable findings, approve the PR when their request authorizes posting the review outcome. Do not merely report that no feedback needs to be addressed. For reviews where approval is unavailable or not authorized, report the result without inventing a finding.
 - Keep the overall review summary to one or two short sentences. Do not repeat every inline comment.
 
 ## Validation Standard
