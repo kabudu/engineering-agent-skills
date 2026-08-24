@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Splitter"
+  short_description: "Split oversized PRs into reviewable linked changes"
+  default_prompt: "Use $pr-splitter to analyse this oversized pull request and propose dependency-aware reviewable PR slices."
