@@ -40,6 +40,7 @@ A useful slice should answer yes to most of these:
 5. Could it be reverted without silently corrupting later slices?
 6. Is its migration/configuration ordering explicit?
 7. Does it avoid duplicating code that will be removed by a later slice?
+8. Does its changelog describe only behaviour this slice fully delivers?
 
 Merge candidates that fail because they are artificially narrow. Stack them when the dependency is real but the review boundary remains valuable.
 
@@ -65,12 +66,35 @@ Use only the levels present in the changeset; do not manufacture a five-PR stack
 
 Put a behaviour-preserving refactor first only when it materially simplifies review and has strong regression coverage. Otherwise keep the refactor with the behaviour that justifies it.
 
+## Changelog Allocation and Reconciliation Gate
+
+Build an entry-to-behaviour map before creating branches. For every original changelog or release-note entry, record the behaviour it describes, the child PR that first delivers that complete behaviour, and whether its wording or placement needs reconciliation.
+
+Apply these allocation rules:
+
+- assign an entry to exactly one child PR;
+- keep sibling entries scoped to independently mergeable behaviour;
+- in a stack, add an entry in the child diff where the behaviour becomes complete, not in every descendant branch;
+- do not make a foundation PR advertise a later consumer or user workflow;
+- keep entries in the repository's current unreleased/release-note location and out of historical released sections;
+- consolidate duplicate or incremental entries into a concise statement of the delivered outcome;
+- explicitly justify a slice with no changelog entry when repository policy or the nature of the change makes that correct.
+
+Reconcile at three points:
+
+1. **Plan:** every original entry has one proposed owner or a documented consolidation/omission.
+2. **Per child:** diff the child against its actual base and confirm its changelog claims match only that child's delivered behaviour.
+3. **Aggregate:** reconstruct the final series and confirm all intended entries occur once, with no duplicate bullets, contradictory claims, empty headings, conflict markers, or additions to historical release sections.
+
+Use repository-specific changelog paths and validation. Useful generic inspections include `git diff <actual-base>...<child> -- <changelog-paths>` for each child and a final aggregate comparison with the original head. Treat reconciled wording or placement as an intentional metadata difference: call it out in the equivalence proof rather than hiding it as tree equality.
+
 ## Equivalence Proof
 
 Use more than path accounting:
 
 - compare the reconstructed final tree to the original head;
 - explain intentional metadata differences such as PR-only changelog/link edits;
+- verify the aggregate changelog contains each intended entry once, in the correct release section, and explain every consolidation or omission;
 - inventory original commits and cross-cutting hunks;
 - verify migrations and generated outputs are neither duplicated nor omitted;
 - run the original branch's focused/full validation on the reconstructed final stack;
