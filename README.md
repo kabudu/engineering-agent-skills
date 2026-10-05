@@ -9,6 +9,7 @@ This repository is a public catalogue of portable skills that follow the open Ag
 | Skill | Purpose |
 | --- | --- |
 | [`lazarus-mode`](skills/lazarus-mode) | Expert engineering rigor for implementation, review, testing, documentation, and release work. |
+| [`pr-splitter`](skills/pr-splitter) | Decompose oversized pull requests into dependency-aware, reviewable PRs while preserving their combined behaviour. |
 
 ## Clone the repository
 
@@ -80,6 +81,12 @@ skills/
     SKILL.md
     agents/
       openai.yaml
+  pr-splitter/
+    SKILL.md
+    agents/
+      openai.yaml
+    references/
+      decomposition-playbook.md
 ```
 
 Each skill must have a `SKILL.md` entry point with valid `name` and `description` frontmatter.

@@ -14,7 +14,7 @@ Turn one oversized PR into a coherent review series whose combined result is equ
 Treat analysis and execution as separate modes.
 
 - A request to analyse, assess, plan, or propose a split is read-only. Do not create or push branches, open PRs, post comments, change the original PR, or rewrite commits.
-- Create branches or PRs only when the user explicitly asks to perform the split. Confirm the repository, original PR or head branch, base branch, fork/canonical remotes, and whether the original PR should remain open as an umbrella.
+- Create branches or PRs only when the user explicitly asks to perform the split. Resolve the repository, original PR/head, base branch, and fork/canonical remotes from repository and session evidence; ask only for missing or ambiguous inputs. Keep the original PR open as an umbrella unless separately authorized otherwise.
 - Never merge or close the original or child PRs unless separately authorized.
 - Recheck authorization immediately before pushing branches, creating PRs, or editing the original PR description/comments.
 
@@ -28,9 +28,9 @@ Treat analysis and execution as separate modes.
 
 ## Design the Split
 
-Read [references/decomposition-playbook.md](references/decomposition-playbook.md) when choosing boundaries or executing a split.
+Read [references/decomposition-playbook.md](references/decomposition-playbook.md) when boundary or dependency decisions need additional heuristics or examples. Mandatory workflow and safety rules are defined here.
 
-Build a dependency graph before proposing branches. Prefer slices that each have one clear purpose, a bounded blast radius, meaningful validation, and a reviewer who can understand the change without reconstructing later PRs.
+Build a dependency graph before proposing branches. Each slice must leave its target buildable and operationally safe, expose an understandable contract, and allow meaningful validation at that stage. Make migration/configuration ordering and safe rollback with dependants explicit. Prefer slices that each have one clear purpose, a bounded blast radius, meaningful validation, and a reviewer who can understand the change without reconstructing later PRs.
 
 Choose one topology:
 
@@ -75,25 +75,26 @@ Before execution is complete, reconcile the aggregate changelog against the orig
 3. Create predictably named branches from the exact approved base or parent slice. A useful pattern is `split/<ticket-or-pr>/<nn>-<purpose>`.
 4. Reuse whole commits only when they already match a slice. For tangled commits, repartition the diff semantically; do not preserve poor commit boundaries at the cost of poor PR boundaries.
 5. Keep migrations with the first code that requires them, generated artifacts with their source/schema change, tests with the behaviour they prove, and changelog entries with the slice that fully delivers the described outcome.
-6. Validate each slice against its declared base before pushing. A stacked child must be tested with its parent applied, not against the ultimate base alone.
-7. Compare the final reconstructed stack/group against the original head. The aggregate tree and intended behaviour must match, except for explicitly documented cleanup approved by the user. Reconcile the aggregate changelog so intended entries appear once, in the correct release section, with no split-induced duplicates or contradictory wording.
+6. Validate each slice against its declared base before pushing, including its changelog claims under the policy above. A stacked child must be tested with its parent applied, not against the ultimate base alone.
+7. Prove aggregate equivalence: compare the reconstructed final tree with the original head, account for original commits and cross-cutting hunks, verify migrations/generated output, aggregate diff statistics, and configuration defaults, and run the original branch’s required validation. Prefer exact tree equality; keep cleanup separate and obtain user approval. Document approved cleanup or metadata differences. Apply the changelog policy above to the aggregate, checking for duplicates, contradictory claims, empty headings, and conflict markers.
 8. Push only approved split branches. Use leases for any rewritten remote branch and never overwrite the original PR head unless explicitly requested.
-9. Create child PRs with concise descriptions that state purpose, dependency/base, scope, validation, and `Part N of M` linkage to the original PR.
-10. Link every child from the original umbrella PR and every child back to the umbrella. For stacked PRs, also link the immediate predecessor/successor and state the required merge order.
+9. Create child PRs with concise descriptions stating purpose/review boundary, dependency/base, scope and work deferred to later parts, validation, independent deployability, required merge order, and `Part N of M` linkage to the original PR.
+10. Link every child from the original umbrella PR and every child back to the umbrella. For stacked PRs, also link the immediate predecessor/successor and state the required merge order. The umbrella lists status and dependencies; verify child bases after each merge rather than assuming automatic retargeting.
 
 ## Completion Gate
 
 Do not call the split complete until:
 
 - every original changed path and semantic change is accounted for;
-- every original changelog/release-note entry is assigned exactly once, or its supersession, consolidation, or omission is explicitly justified;
-- each child changelog describes only behaviour delivered by that child, and the aggregate contains the intended entries exactly once in the correct release section;
-- each child diff is reviewable against its actual base;
+- changelog allocation and child/aggregate reconciliation satisfy the policy above;
+- each child diff is reviewable against its actual base and aggregate equivalence is proven;
 - required tests and repository checks pass or failures are precisely documented;
 - branch targets and PR dependencies are correct;
 - no temporary files or unrelated working-tree content entered a branch;
 - remote child refs match local heads;
 - all PR links are reciprocal and the original PR clearly acts as the umbrella;
 - the original PR remains unmerged/open unless the user explicitly requested otherwise.
+
+If the original head moves, stop mutation, fetch, and refresh the plan/equivalence proof. If validation reveals a dependency, combine slices or stack them and revise links/merge order. If permissions or branch protection block execution, preserve local refs and report the exact blocker.
 
 Report created branches/PRs, topology, validation, equivalence evidence, CI state, preserved local files, and remaining merge-order or rollout risks.
