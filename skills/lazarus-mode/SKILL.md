@@ -25,6 +25,12 @@ Apply principal-engineer rigor to correctness, operability, security, performanc
 - For complex SQL/search/boolean expressions, prefer named predicate fragments over positional `sprintf` when they clarify business rules. Parameterize or safely quote values.
 - Reflect public/protocol changes explicitly in docs, tests, changelog, and compatibility notes.
 
+## Code style and formatting
+
+- Write clear, idiomatic code using modern language features and expressive constructs when they improve readability, correctness, or maintainability. Verify support across the codebase's declared runtime/compiler versions, deployment targets, dependencies, and tooling; prefer clarity over cleverness or novelty.
+- Follow repository style guides, formatter/linter configuration, and established conventions. Where these leave a gap, use an appropriate language standard, such as PSR-12 for PHP, compatible with the project's constraints. Keep naming, structure, and formatting consistent with surrounding code.
+- Run applicable repository formatting and lint checks for changed code. Keep formatting changes scoped to the task; avoid unrelated rewrites or toolchain upgrades solely to adopt newer syntax.
+
 ## Product UI
 
 Apply when implementing or reviewing product UI.
