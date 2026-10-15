@@ -12,6 +12,7 @@ Apply principal-engineer rigor to correctness, operability, security, performanc
 - Inspect the actual architecture, relevant modules/tests, docs, release process, and maturity. Follow local conventions unless they block correctness.
 - Before editing, inventory every explicit user request, roadmap bullet, checklist item, linked-doc requirement, release expectation, and conditional documentation/update obligation separately. Resolve ambiguous roadmap wording into concrete acceptance criteria.
 - Choose the simplest conventional implementation using existing components. Add complexity only for a concrete correctness, security, performance, scalability, compatibility, or operability need; explain that need and bound the cost. Prefer usable increments; widen scope when a narrow patch leaves an unsafe or misleading boundary.
+- Model domain states and ownership explicitly where this prevents contradictory states or duplicated rules. Derive values from authoritative state instead of synchronising copies; use the language's supported types and structures without forcing an abstraction onto clear local code.
 - Deliver usable behaviour within the requested scope. Scaffolds, TODOs, starter templates, and documentation alone do not establish completion. Identify blockers before merge/release; defer requirements only with explicit user acceptance. State prototype limitations and future production requirements precisely.
 - Before each non-trivial change, establish:
   - requirement, invariant, and owning component;
@@ -24,6 +25,11 @@ Apply principal-engineer rigor to correctness, operability, security, performanc
 - For new projects, use the latest stable language edition, toolchain, dependencies, and security posture supported by the local ecosystem. Verify the active toolchain before choosing older versions; document compatibility constraints and validation evidence for older or deprecated/insecure choices.
 - For complex SQL/search/boolean expressions, prefer named predicate fragments over positional `sprintf` when they clarify business rules. Parameterize or safely quote values.
 - Reflect public/protocol changes explicitly in docs, tests, changelog, and compatibility notes.
+- For recurring mistakes, prefer a proportionate type, lint rule, test, or script over another instruction. Check that it catches the actual failure and permits valid behaviour; reserve prose for constraints requiring judgement.
+
+## Debugging
+
+For defect diagnosis or repair, read [references/debugging.md](references/debugging.md). Establish reproduction evidence, test the causal explanation, and rerun the original failure after a fix. Keep diagnosis-only requests read-only and report reproduction gaps explicitly.
 
 ## Code style and formatting
 
@@ -48,6 +54,7 @@ Use the strongest practical validation for the blast radius:
 - Workflow test harnesses exercise the real lifecycle: enter changes through normal public/admin/API boundaries → verify persistence → run actual queues/workers/schedules/indexing/cache/asynchronous convergence → read through normal customer/operator boundaries → compare with independently derived expectations. Snapshot affected state, restore in `finally`/equivalent, bound waits with useful diagnostics, and report each phase.
 - Direct database/queue/cache/search inspection supplements, never replaces, E2E evidence. Retain focused unit/integration tests alongside lifecycle harnesses. If a required real boundary cannot run, label the harness integration/simulation and report missing E2E proof; never silently narrow “test harness” or “end-to-end.”
 - Performance-shaped checks for background jobs, discovery/probing, retries, caches, queues, streaming, and other unbounded or latency-sensitive paths.
+- For performance investigations, measurements, or measured speedup/regression claims, read [references/performance.md](references/performance.md). Confirm the intended work ran and its outputs remain correct before interpreting timing; match measurement effort to the claim.
 - Full suites for shared protocol, CLI, schema, or release changes. PR CI must pass before merge unless the user explicitly accepts a documented exception.
 
 For unavailable validation, record the exact command, failure, and whether environmental or code-related.
@@ -61,7 +68,7 @@ Self-review in order:
 3. Security, secrets, privacy, replay/side effects.
 4. Protocol/API compatibility and versioning.
 5. Failures, rollback, idempotency, cleanup.
-6. Behavioral test coverage, not just implementation details.
+6. Behavioral test coverage: tests catch broken observable behaviour and survive internal refactors. Derive expectations from the contract, not the implementation under test.
 7. Simplicity/maintainability: abstraction, duplication, dependencies, moving parts, configuration, operator burden.
 8. Docs/changelog accuracy.
 9. Accidental generated/local artifacts and unrelated diffs.
@@ -86,6 +93,7 @@ Before claiming completion, merging, or releasing:
 3. Search touched release surfaces for `TODO`, `FIXME`, `REPLACE_WITH`, `placeholder`, `starter`, `template`, `future`, `not implemented`, and unchecked boxes.
 4. Check packaging/deployment/docs claims against real files and release artifacts. Placeholder checksums, nonexistent required images, or docs without behavior are incomplete.
 5. Update roadmap/checklists only when implementation and validation support the status.
+6. Identify the revision or working-tree state and relevant environment behind validation. After code, base, dependency, or configuration changes, rerun affected checks; neither an unchanged patch nor an earlier green run alone establishes current correctness.
 
 If anything remains not done, never call the whole roadmap item shipped: report the exact gap and fix before release or keep explicitly deferred.
 

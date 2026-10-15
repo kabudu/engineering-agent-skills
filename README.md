@@ -81,6 +81,9 @@ skills/
     SKILL.md
     agents/
       openai.yaml
+    references/
+      debugging.md
+      performance.md
   pr-splitter/
     SKILL.md
     agents/
