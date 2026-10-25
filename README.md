@@ -9,6 +9,8 @@ This repository is a public catalogue of portable skills that follow the open Ag
 | Skill | Purpose |
 | --- | --- |
 | [`lazarus-mode`](skills/lazarus-mode) | Expert engineering rigor for implementation, review, testing, documentation, and release work. |
+| [`rust-best-practices`](skills/rust-best-practices) | Implement, refactor, and debug Rust with concise core guidance and selectively loaded references. |
+| [`rust-review`](skills/rust-review) | Review Rust for evidence-backed correctness, safety, and compatibility findings; independently installable. |
 | [`pr-splitter`](skills/pr-splitter) | Decompose oversized pull requests into dependency-aware, reviewable PRs while preserving their combined behaviour. |
 
 ## Clone the repository
@@ -90,10 +92,32 @@ skills/
       openai.yaml
     references/
       decomposition-playbook.md
+  rust-best-practices/
+    SKILL.md
+    LICENSE
+    NOTICE.md
+    references/
+      api-and-cargo.md
+      concurrency.md
+      unsafe-and-ffi.md
+  rust-review/
+    SKILL.md
+    LICENSE
+    NOTICE.md
+    references/
+      risk-checks.md
 ```
+
+The Rust skills use the same installation pattern above: substitute `rust-best-practices` or `rust-review` for `lazarus-mode`. Each can be installed separately; neither requires another skill. Optional host metadata is not required for their use.
+
+Rust evaluation cases and comparison instructions live in [`evals/rust`](evals/rust). Entrypoint compression is measured separately from behavioural effectiveness; no equivalent-performance claim is made without comparative runs.
 
 Each skill must have a `SKILL.md` entry point with valid `name` and `description` frontmatter.
 
+## Attribution
+
+The Rust skills adapt [BeautifulRust](https://github.com/morganlinton/BeautifulRust) by Morgan Linton under MIT. Each includes the original licence and a provenance notice recording the source revision and our changes.
+
 ## License
 
-MIT
+MIT. Retained third-party notices accompany the adapted Rust skills.
