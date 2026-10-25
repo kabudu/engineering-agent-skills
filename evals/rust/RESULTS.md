@@ -6,7 +6,7 @@
 
 In the controlled sample, condensed used **27.9% fewer total tokens** and **33.0% less uncached input** than upstream. All three implementation cases passed held-out checks in every condition. The planted-defect review found all three defects in every condition; upstream additionally made an unsupported poison-recovery claim.
 
-**Equivalent reliability and verification depth are not established.** There is only one controlled sample per case, the authoring assistant graded reviews, and the condensed clean-code review skipped available formatting/lint/test checks. An invalidated exploratory repeat also missed two defects under the condensed skill. Keep the PR in draft pending a verification/coverage refinement and repeated controlled evaluation.
+**Equivalent reliability and verification depth are not established.** There is only one controlled sample per case, the authoring assistant graded reviews, and the condensed clean-code review skipped available formatting/lint/test checks. An invalidated exploratory repeat also missed two defects under the condensed skill. Treat the adaptations as experimental. Follow-up work should refine verification/coverage and repeat the controlled evaluation before claiming equivalent reliability.
 
 The no-skill control also passed the implementation tests and identified all three planted defects in this controlled run, using fewer tokens than either skill condition. These examples therefore do not establish a quality benefit from installing either skill.
 
