@@ -1,0 +1,172 @@
+{
+  "assessor": "Authoring assistant, manual rubric review; not an independent or blinded external judge",
+  "implementation_grading": "Held-out Rust integration tests and CLI samples inserted after model execution; unchanged function bodies checked for the refactor. All 18 manifests match the dependency-free fixture.",
+  "runs": [
+    {
+      "id": "clean-review-condensed-1",
+      "case": "clean-review",
+      "condition": "condensed",
+      "actionable_correctness_findings": 0,
+      "invented_defects": 0,
+      "read_only": true,
+      "agent_checks": [],
+      "workflow_gap": "Only source/manifest inspection was performed despite available formatting, Clippy, and test tools. Token reduction here does not establish equivalent verification depth."
+    },
+    {
+      "id": "clean-review-none-1",
+      "case": "clean-review",
+      "condition": "none",
+      "actionable_correctness_findings": 0,
+      "invented_defects": 0,
+      "read_only": true,
+      "agent_checks": [
+        "cargo test"
+      ]
+    },
+    {
+      "id": "clean-review-original-1",
+      "case": "clean-review",
+      "condition": "original",
+      "actionable_correctness_findings": 0,
+      "invented_defects": 0,
+      "read_only": true,
+      "agent_checks": [
+        "cargo fmt --check",
+        "cargo clippy",
+        "cargo test"
+      ]
+    },
+    {
+      "id": "cli-condensed-1",
+      "case": "cli",
+      "condition": "condensed",
+      "contract_tests_passed": true,
+      "cli_contract_passed": true
+    },
+    {
+      "id": "cli-none-1",
+      "case": "cli",
+      "condition": "none",
+      "contract_tests_passed": true,
+      "cli_contract_passed": true
+    },
+    {
+      "id": "cli-original-1",
+      "case": "cli",
+      "condition": "original",
+      "contract_tests_passed": true,
+      "cli_contract_passed": true
+    },
+    {
+      "id": "library-condensed-1",
+      "case": "library",
+      "condition": "condensed",
+      "contract_tests_passed": true
+    },
+    {
+      "id": "library-none-1",
+      "case": "library",
+      "condition": "none",
+      "contract_tests_passed": true
+    },
+    {
+      "id": "library-original-1",
+      "case": "library",
+      "condition": "original",
+      "contract_tests_passed": true
+    },
+    {
+      "id": "refactor-condensed-1",
+      "case": "refactor",
+      "condition": "condensed",
+      "contract_tests_passed": true,
+      "other_functions_preserved": true
+    },
+    {
+      "id": "refactor-none-1",
+      "case": "refactor",
+      "condition": "none",
+      "contract_tests_passed": true,
+      "other_functions_preserved": true
+    },
+    {
+      "id": "refactor-original-1",
+      "case": "refactor",
+      "condition": "original",
+      "contract_tests_passed": true,
+      "other_functions_preserved": true
+    },
+    {
+      "id": "review-condensed-1",
+      "case": "review",
+      "condition": "condensed",
+      "defects_found": [
+        "view invalid slice",
+        "first empty-input panic",
+        "wire_len truncation"
+      ],
+      "missed_defects": [],
+      "unsupported_bug_claims": [],
+      "read_only": true
+    },
+    {
+      "id": "review-none-1",
+      "case": "review",
+      "condition": "none",
+      "defects_found": [
+        "view invalid slice",
+        "first empty-input panic",
+        "wire_len truncation"
+      ],
+      "missed_defects": [],
+      "unsupported_bug_claims": [],
+      "read_only": true,
+      "location_errors": [
+        "first cites line 35 instead of 33",
+        "wire_len cites line 38 instead of 36; function names and diagnoses remain identifiable"
+      ]
+    },
+    {
+      "id": "review-original-1",
+      "case": "review",
+      "condition": "original",
+      "defects_found": [
+        "view invalid slice",
+        "first empty-input panic",
+        "wire_len truncation"
+      ],
+      "missed_defects": [],
+      "unsupported_bug_claims": [
+        "Claim that clearing poison while holding the repaired mutex guard is incorrect and that the guard must be dropped first. Standard-library clear_poison documentation explicitly demonstrates recovery while holding the guard. The proposed release-and-relock workaround introduces unnecessary concurrency exposure."
+      ],
+      "read_only": true
+    },
+    {
+      "id": "scope-condensed-1",
+      "case": "scope",
+      "condition": "condensed",
+      "correct_two_sentence_answer": true,
+      "command_count": 0,
+      "unnecessary_skill_read": false,
+      "read_only": true
+    },
+    {
+      "id": "scope-none-1",
+      "case": "scope",
+      "condition": "none",
+      "correct_two_sentence_answer": true,
+      "command_count": 0,
+      "unnecessary_skill_read": false,
+      "read_only": true
+    },
+    {
+      "id": "scope-original-1",
+      "case": "scope",
+      "condition": "original",
+      "correct_two_sentence_answer": true,
+      "command_count": 0,
+      "unnecessary_skill_read": false,
+      "read_only": true
+    }
+  ]
+}
