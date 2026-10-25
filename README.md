@@ -110,7 +110,7 @@ skills/
 
 The Rust skills use the same installation pattern above: substitute `rust-best-practices` or `rust-review` for `lazarus-mode`. Each can be installed separately; neither requires another skill. Optional host metadata is not required for their use.
 
-Rust evaluation cases and comparison instructions live in [`evals/rust`](evals/rust). Entrypoint compression is measured separately from behavioural effectiveness; no equivalent-performance claim is made without comparative runs.
+Rust evaluation cases and comparison instructions live in [`evals/rust`](evals/rust). The [18-run preliminary report](evals/rust/RESULTS.md) records measured token usage, held-out checks, and verification gaps. Entrypoint compression is distinct from runtime savings; equivalent reliability is not established.
 
 Each skill must have a `SKILL.md` entry point with valid `name` and `description` frontmatter.
 

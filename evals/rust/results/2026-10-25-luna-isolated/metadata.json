@@ -1,0 +1,117 @@
+{
+  "skill_isolation": {
+    "none": [],
+    "original": [
+      "rust-best-practices",
+      "rust-review"
+    ],
+    "condensed": [
+      "rust-best-practices",
+      "rust-review"
+    ]
+  },
+  "upstream_revision": "2b2d53a66f6f36ab4b8d6a93070183d91e77fad4",
+  "adapted_revision": "34878c508671a030151345bd10feb6f834131707",
+  "cli_version": "codex-cli 0.164.0-alpha.11.1",
+  "rustc_version": "rustc 1.97.0 (2d8144b78 2026-07-07)",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "low",
+  "workers": 1,
+  "timeout_seconds": 600,
+  "order": [
+    [
+      "condensed",
+      "scope",
+      1
+    ],
+    [
+      "original",
+      "scope",
+      1
+    ],
+    [
+      "none",
+      "scope",
+      1
+    ],
+    [
+      "none",
+      "review",
+      1
+    ],
+    [
+      "condensed",
+      "review",
+      1
+    ],
+    [
+      "original",
+      "review",
+      1
+    ],
+    [
+      "condensed",
+      "clean-review",
+      1
+    ],
+    [
+      "none",
+      "clean-review",
+      1
+    ],
+    [
+      "original",
+      "clean-review",
+      1
+    ],
+    [
+      "condensed",
+      "refactor",
+      1
+    ],
+    [
+      "none",
+      "refactor",
+      1
+    ],
+    [
+      "original",
+      "refactor",
+      1
+    ],
+    [
+      "condensed",
+      "library",
+      1
+    ],
+    [
+      "none",
+      "library",
+      1
+    ],
+    [
+      "original",
+      "library",
+      1
+    ],
+    [
+      "original",
+      "cli",
+      1
+    ],
+    [
+      "condensed",
+      "cli",
+      1
+    ],
+    [
+      "none",
+      "cli",
+      1
+    ]
+  ],
+  "seed": 20261025,
+  "notes": "Explicit skill invocation except scope case. Personal skills disabled; user config, rules, memories, plugins, apps, web and project docs disabled. Skills themselves discovered from project .agents/skills. Normal built-in tool/instruction overhead remains.",
+  "published_repeat": 1,
+  "selection": "All successful runs for this repeat; failed or unfinished attempts excluded from comparisons and disclosed in the report."
+}

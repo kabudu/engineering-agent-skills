@@ -16,4 +16,32 @@ Run `python3 evals/rust/check_fixtures.py` from the repository root. It compiles
 
 ## Status
 
-No comparative model runs have been performed. Behavioural equivalence and total-token savings are unverified. See RESULTS.md for measured packaging results and the exact scope of local checks.
+An 18-run controlled GPT-6 Luna preliminary comparison is complete. See [RESULTS.md](RESULTS.md) for actual token counts, held-out test outcomes, verification gaps, and invalidated-pilot disclosures. Repeated-run equivalence and general savings remain unverified.
+
+## Run the comparison locally
+
+Requires an authenticated Codex CLI supporting `exec --json`, `--ignore-user-config`, and the configuration keys used by the runner, plus Rust/Cargo on PATH. These model runs consume the account's Codex allowance. Use a model available to the account; the example preserves the model used for this evaluation.
+
+```sh
+git clone https://github.com/morganlinton/BeautifulRust /tmp/beautifulrust-eval-upstream
+git -C /tmp/beautifulrust-eval-upstream checkout 2b2d53a66f6f36ab4b8d6a93070183d91e77fad4
+python3 evals/rust/run_comparison.py \
+  --upstream /tmp/beautifulrust-eval-upstream \
+  --output /tmp/rust-skill-comparison \
+  --model gpt-6-luna --workers 1 --repeats 1
+python3 evals/rust/summarise_comparison.py /tmp/rust-skill-comparison
+```
+
+The default `--repeats 1` runs an 18-run preliminary comparison. Use `--repeats 3` only when a full 54-run comparison is desired. Reusing the output directory resumes successful runs and archives unfinished attempts; mismatched models, skill contents, or verified catalogues require a new directory. The scheduler prioritises balanced task blocks before later repetitions, randomising condition order within each block using a recorded seed. Rate limits can substantially extend runtime; the runner honours CLI retries and bounds each attempt with a timeout. Ctrl-C or SIGTERM stops active model processes and prevents queued calls from starting.
+
+Before spending model tokens, an app-server skills/list preflight verifies the exact enabled catalogue for each condition. The runner disables personal skills (including symlink targets, using SKILL.md paths), bundled skills, user configuration/rules, project instructions, memories, plugins, apps, multi-agent tools, and web search for these synthetic tasks. It uses fresh crates and copies only the tested skills; upstream eval rubrics are removed. Implementation prompts explicitly invoke the relevant skill; the borrowing explanation tests automatic routing. Both skills are installed for the main comparison, matching upstream's recommended installation. Review-only independence and broader automatic discovery require separate experiments.
+
+The independent implementation checks use fixed public interfaces to avoid subjective adapters: Version's three accessors and FromStr, CSV-like CLI stdout/stderr, and Option/Result boundaries for the refactor. These make prompts more specific than the short descriptions in CASES.md; all conditions receive the same task specification. Grader tests are added only after model execution. Review and explanation outcomes require inspecting the saved responses; summarise_comparison.py never silently marks those as quality passes.
+
+To publish an evidence subset without runtime state or credentials:
+
+```sh
+python3 evals/rust/export_comparison.py /tmp/rust-skill-comparison /tmp/rust-skill-evidence --repeat 1
+```
+
+Inspect the export before committing. It whitelists run metadata, response text, commands, token counts, test evidence, and generated Rust sources. Raw session events and authentication are excluded.

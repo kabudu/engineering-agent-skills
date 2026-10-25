@@ -1,0 +1,900 @@
+[
+  {
+    "exit_code": 0,
+    "id": "clean-review-condensed-1",
+    "case": "clean-review",
+    "condition": "condensed",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 7.71,
+    "usage": [
+      {
+        "input_tokens": 35177,
+        "cached_input_tokens": 16768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 288,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 2,
+    "final": "No actionable correctness defects found in `src/lib.rs`. `first` handles empty and nonempty slices as documented, and `wire_len` uses checked conversion, returning an error when the length exceeds 255.\n\nChecks run: inspected `Cargo.toml` and `src/lib.rs`. I did not run build or test commands. The crate has no manifest-declared dependencies; review coverage is limited to this file and the available crate context.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "b9890b23eae3a7c3536d839496f8c5ddf76bc67733c7652396b5af3e40990fe2",
+      ".agents/skills/rust-best-practices/NOTICE.md": "d6fac25dc3033d11a85c90f807bdb38730d0cbe56a1bcd628dbfa0a303dfc403",
+      ".agents/skills/rust-best-practices/references/unsafe-and-ffi.md": "4c0962bea425a14ec9dd1d372c3579359abc4d824177613e92a11b5457343f5b",
+      ".agents/skills/rust-best-practices/references/api-and-cargo.md": "31c3a2bd0b10ae4d70fab2542a42ece6aed607676aa920a7e076f9b61329c03f",
+      ".agents/skills/rust-best-practices/references/concurrency.md": "4483ba60e3d63f43a20bf66aa231eef1812584a671b8801a9946242dbf3debc6",
+      ".agents/skills/rust-review/SKILL.md": "33b89604ccf2ba3a46878e7779041176051a1b22f9603b1c6ae99fdc315d1b90",
+      ".agents/skills/rust-review/NOTICE.md": "89cfc276ec76b8e63c7050af31fbbef52fd8d8620924a0d453d1cb6c538c0eb4",
+      ".agents/skills/rust-review/references/risk-checks.md": "25d888d661af3e3bcddc7587e33469a4c54a77ec925299e75f89fa010a442489"
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'Cargo.lock' -g 'rust-toolchain*' -g '.github/**' -g 'src/**' -g 'tests/**' | head -200\"",
+      "/bin/zsh -lc \"cat Cargo.toml && sed -n '1,260p' src/lib.rs && rg -n \\\"\\\" AGENTS.md src/AGENTS.md 2>/dev/null\""
+    ],
+    "prompt": "Use $rust-review for this task.\n\nReview src/lib.rs for actionable correctness defects. Do not modify the file. Report evidence-backed findings, if any, and checks actually run and meaningful limitations.",
+    "raw_result_sha256": "2aea22c8b6e985c978cdb0f7f03b6c911a1a8e1634ca9da20ea8813f74e974c1",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "clean-review-none-1",
+    "case": "clean-review",
+    "condition": "none",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 8.64,
+    "usage": [
+      {
+        "input_tokens": 43606,
+        "cached_input_tokens": 40576,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 440,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 5,
+    "final": "No actionable correctness defects found in `src/lib.rs`. `first` returns the first byte or `None` for empty input, and `wire_len` uses checked conversion, returning an error when the slice length exceeds 255, as documented.\n\n**Checks run:** `cargo test` passed (1 unit test; no doc tests).\n\n**Limitations:** The review covered this small crate only; there are no callers or additional project documentation in the workspace to assess broader wire-format expectations.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {},
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/lib.rs' -g 'README*' -g 'Cargo.lock'\"",
+      "/bin/zsh -lc \"sed -n '1,260p' src/lib.rs\"",
+      "/bin/zsh -lc 'rg --files'",
+      "/bin/zsh -lc 'cat Cargo.toml && git status --short'",
+      "/bin/zsh -lc 'cargo test'"
+    ],
+    "prompt": "Review src/lib.rs for actionable correctness defects. Do not modify the file. Report evidence-backed findings, if any, and checks actually run and meaningful limitations.",
+    "raw_result_sha256": "5f3f627efdf85827a698c5ebd3b4b2dea1ecfbc16bcc327051ecc0e451a354dd",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "clean-review-original-1",
+    "case": "clean-review",
+    "condition": "original",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 9.86,
+    "usage": [
+      {
+        "input_tokens": 52532,
+        "cached_input_tokens": 37248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 610,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 6,
+    "final": "# Rust review: `src/lib.rs`\n\nThis is a Rust 2021 library with two small byte-slice helpers. I found no actionable correctness defects: `first` handles empty input, and `wire_len` returns an error when the length cannot fit in a byte. `cargo test` passed; clippy completed with one advisory pedantic warning, and `cargo fmt --check` found a formatting difference.\n\n## What's already good\n\n- Both functions accept `&[u8]`, a flexible slice-based API.\n- `wire_len` uses checked integer conversion instead of truncating.\n- Tests cover the empty and single-byte cases, plus the 255/256 length boundary.\n\nThe only linter suggestion was `#[must_use]` on `first` (`clippy::must_use_candidate`); it is advisory, not a correctness issue. Formatting can be corrected by expanding `first`\u2019s body across multiple lines.\n\nNo `[lints]` table is present in `Cargo.toml`. The skill suggests considering the BeautifulRust lint configs; this file\u2019s `must_use_candidate` suggestion is one example clippy surfaced. **I did not modify the file.**",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "5cd0a94e2909022aa79871795560f44904bac64da59e6588eb134fed49bfb076",
+      ".agents/skills/rust-best-practices/references/effective-rust.md": "c0fe4ea29d2601224ac68b307d8c6137dd932b2565c141c1527c88ba1c5d5415",
+      ".agents/skills/rust-best-practices/references/google-rust-style-guide.md": "cfe61cd554c9dc32b412bb22dec7bd58e9eb4b3931db79124a61b8c2f573542c",
+      ".agents/skills/rust-best-practices/references/microsoft-rust-guidelines.md": "648cfee06cea304e3d9c525e6de9047c296ce353e156a8117111094418ccc4b8",
+      ".agents/skills/rust-best-practices/references/rust-design-patterns.md": "3102f45153ac7c75179ee43b12d143b33e4aaba9b2209c454dd4f0542cae7ae7",
+      ".agents/skills/rust-best-practices/references/rust-api-guidelines.md": "392a94ed5151a7eeaf6f0d0f0cbd29904fa41ae4c4ae5ae98d79e7da3ba2a8af",
+      ".agents/skills/rust-review/SKILL.md": "c0d3d593e9a1514b52c0a017dc1626ea53d36cd32e6fd33362b05a69aa377b7d"
+    },
+    "commands": [
+      "/bin/zsh -lc 'cat .agents/skills/rust-review/SKILL.md && cat .agents/skills/rust-best-practices/SKILL.md'",
+      "/bin/zsh -lc \"pwd && rg --files -g 'Cargo.toml' -g 'src/lib.rs' -g 'AGENTS.md' -g 'lints.toml' -g 'clippy.toml' -g 'rust-toolchain*'\"",
+      "/bin/zsh -lc 'cat Cargo.toml && nl -ba src/lib.rs'",
+      "/bin/zsh -lc 'cargo fmt --check'",
+      "/bin/zsh -lc 'cargo clippy --all-targets --all-features -- -W clippy::pedantic'",
+      "/bin/zsh -lc 'cargo test'"
+    ],
+    "prompt": "Use $rust-review for this task.\n\nReview src/lib.rs for actionable correctness defects. Do not modify the file. Report evidence-backed findings, if any, and checks actually run and meaningful limitations.",
+    "raw_result_sha256": "c1c6891049caa9b515af06de34d20cbd1a3a594ab478bee907b68879b6a6375f",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "cli-condensed-1",
+    "case": "cli",
+    "condition": "condensed",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 24.51,
+    "usage": [
+      {
+        "input_tokens": 108864,
+        "cached_input_tokens": 100608,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2204,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 8,
+    "final": "Implemented the CLI in [src/main.rs](<workspace>/src/main.rs). It accepts only strict `category,u64` lines, skips and counts malformed lines, sums with overflow checks, and prints totals in lexicographic order. Overflow and I/O failures exit nonzero.\n\nChecks passed: `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, and `cargo test` (4 tests).",
+    "checks": {
+      "independent_tests": true,
+      "test_output": "\nrunning 4 tests\n....\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "build": true,
+      "cli_samples": [
+        {
+          "passed": true,
+          "input": "b,2\na,1\nb,3\nbad\na,nope\n",
+          "returncode": 0,
+          "stdout": "a,1\nb,5\n",
+          "stderr": "skipped=2\n"
+        },
+        {
+          "passed": true,
+          "input": "",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "skipped=0\n"
+        },
+        {
+          "passed": true,
+          "input": "a,18446744073709551615\na,1\n",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "category total overflow\n"
+        },
+        {
+          "passed": true,
+          "input": "a,1,2\n,2\na,-1\na,+1\na, 1\na,\uff11\nwhite space,1\na,18446744073709551616\nz,0\n",
+          "returncode": 0,
+          "stdout": "z,0\n",
+          "stderr": "skipped=8\n"
+        },
+        {
+          "passed": true,
+          "input": "A,3\na,2\nA,4",
+          "returncode": 0,
+          "stdout": "A,7\na,2\n",
+          "stderr": "skipped=0\n"
+        }
+      ],
+      "cli_contract": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "b9890b23eae3a7c3536d839496f8c5ddf76bc67733c7652396b5af3e40990fe2",
+      ".agents/skills/rust-best-practices/NOTICE.md": "d6fac25dc3033d11a85c90f807bdb38730d0cbe56a1bcd628dbfa0a303dfc403",
+      ".agents/skills/rust-best-practices/references/unsafe-and-ffi.md": "4c0962bea425a14ec9dd1d372c3579359abc4d824177613e92a11b5457343f5b",
+      ".agents/skills/rust-best-practices/references/api-and-cargo.md": "31c3a2bd0b10ae4d70fab2542a42ece6aed607676aa920a7e076f9b61329c03f",
+      ".agents/skills/rust-best-practices/references/concurrency.md": "4483ba60e3d63f43a20bf66aa231eef1812584a671b8801a9946242dbf3debc6",
+      ".agents/skills/rust-review/SKILL.md": "33b89604ccf2ba3a46878e7779041176051a1b22f9603b1c6ae99fdc315d1b90",
+      ".agents/skills/rust-review/NOTICE.md": "89cfc276ec76b8e63c7050af31fbbef52fd8d8620924a0d453d1cb6c538c0eb4",
+      ".agents/skills/rust-review/references/risk-checks.md": "25d888d661af3e3bcddc7587e33469a4c54a77ec925299e75f89fa010a442489"
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'Cargo.toml' -g 'Cargo.lock' -g 'rust-toolchain*' -g 'AGENTS.md' -g 'src/**' -g 'tests/**' -g '.github/**'\"",
+      "/bin/zsh -lc \"cat Cargo.toml && cat src/main.rs && rg --files -g 'AGENTS.md' -g 'rust-toolchain*' -g 'Cargo.lock'\"",
+      "/bin/zsh -lc 'cargo fmt --check'",
+      "/bin/zsh -lc 'cargo clippy --all-targets -- -D warnings'",
+      "/bin/zsh -lc 'cargo test'",
+      "/bin/zsh -lc 'cargo fmt --check'",
+      "/bin/zsh -lc 'cargo clippy --all-targets -- -D warnings'",
+      "/bin/zsh -lc 'cargo test'"
+    ],
+    "prompt": "Use $rust-best-practices for this task.\n\nImplement a dependency-free Rust CLI in the existing crate. Read stdin lines containing exactly a nonempty ASCII alphanumeric category and a decimal ASCII u64 separated by one comma. Reject signs, whitespace, empty fields, extra commas, and invalid numeric input. Skip malformed lines and count them. Sum values per category with checked accumulation; exit nonzero on overflow or I/O failure. Print totals in lexicographic category order as category,total lines on stdout, and exactly skipped=N on stderr on success. Add tests. Use src/main.rs. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "83e021c9b38d5fad84b2f81d52c0ad4585c5a41fabce687f2d51699d5181766c",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/main.rs": "use std::collections::BTreeMap;\nuse std::io::{self, BufRead, Write};\n\nfn parse_record(line: &str) -> Option<(&str, u64)> {\n    let (category, value) = line.split_once(',')?;\n    if category.is_empty()\n        || !category.bytes().all(|byte| byte.is_ascii_alphanumeric())\n        || value.is_empty()\n        || !value.bytes().all(|byte| byte.is_ascii_digit())\n    {\n        return None;\n    }\n\n    // split_once allows additional delimiters in the value, rejected by the digit check.\n    let value = value.parse().ok()?;\n    Some((category, value))\n}\n\nfn run<R: BufRead, W: Write, E: Write>(input: R, output: &mut W, error: &mut E) -> io::Result<()> {\n    let mut totals = BTreeMap::<String, u64>::new();\n    let mut skipped = 0_u64;\n\n    for line in input.lines() {\n        let line = line?;\n        match parse_record(&line) {\n            Some((category, value)) => {\n                let total = totals.entry(category.to_owned()).or_default();\n                *total = total\n                    .checked_add(value)\n                    .ok_or_else(|| io::Error::other(\"category total overflow\"))?;\n            }\n            None => {\n                skipped = skipped\n                    .checked_add(1)\n                    .ok_or_else(|| io::Error::other(\"malformed line count overflow\"))?;\n            }\n        }\n    }\n\n    for (category, total) in totals {\n        writeln!(output, \"{category},{total}\")?;\n    }\n    writeln!(error, \"skipped={skipped}\")?;\n    Ok(())\n}\n\nfn main() {\n    let stdin = io::stdin();\n    let stdout = io::stdout();\n    let stderr = io::stderr();\n\n    if let Err(err) = run(stdin.lock(), &mut stdout.lock(), &mut stderr.lock()) {\n        let _ = writeln!(io::stderr().lock(), \"{err}\");\n        std::process::exit(1);\n    }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n    use std::io::Cursor;\n\n    #[test]\n    fn parses_only_strict_records() {\n        assert_eq!(parse_record(\"A1,0\"), Some((\"A1\", 0)));\n        for invalid in [\n            \"\",\n            \",1\",\n            \"a,\",\n            \"a,+1\",\n            \"a,-1\",\n            \"a, 1\",\n            \"a,1 \",\n            \"a,1,2\",\n            \"a_b,1\",\n            \"\u00e9,1\",\n            \"a,18446744073709551616\",\n        ] {\n            assert_eq!(parse_record(invalid), None, \"accepted {invalid:?}\");\n        }\n    }\n\n    #[test]\n    fn aggregates_in_lexicographic_order_and_counts_malformed_lines() {\n        let mut output = Vec::new();\n        let mut error = Vec::new();\n        run(\n            Cursor::new(b\"z,4\\na,2\\nz,3\\nbad\\na,0\\n\"),\n            &mut output,\n            &mut error,\n        )\n        .unwrap();\n\n        assert_eq!(output, b\"a,2\\nz,7\\n\");\n        assert_eq!(error, b\"skipped=1\\n\");\n    }\n\n    #[test]\n    fn reports_accumulation_overflow() {\n        let mut output = Vec::new();\n        let mut error = Vec::new();\n        let result = run(\n            Cursor::new(b\"a,18446744073709551615\\na,1\\n\"),\n            &mut output,\n            &mut error,\n        );\n        assert_eq!(result.unwrap_err().kind(), io::ErrorKind::Other);\n    }\n\n    #[test]\n    fn propagates_input_errors() {\n        struct FailingReader;\n        impl io::Read for FailingReader {\n            fn read(&mut self, _buffer: &mut [u8]) -> io::Result<usize> {\n                Err(io::Error::other(\"read failed\"))\n            }\n        }\n\n        let mut output = Vec::new();\n        let mut error = Vec::new();\n        assert!(run(io::BufReader::new(FailingReader), &mut output, &mut error).is_err());\n    }\n}\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "cli-none-1",
+    "case": "cli",
+    "condition": "none",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 31.9,
+    "usage": [
+      {
+        "input_tokens": 94872,
+        "cached_input_tokens": 87680,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2269,
+        "reasoning_output_tokens": 330
+      }
+    ],
+    "command_count": 4,
+    "final": "Implemented the dependency-free CLI in [src/main.rs](<workspace>/src/main.rs). It validates each line, skips and counts malformed input, prints category totals in lexicographic order, and exits nonzero on accumulation overflow or I/O errors.\n\nAdded four unit tests covering validation, sorting and summing, overflow, and carriage returns. `cargo test` passed: 4 tests.",
+    "checks": {
+      "independent_tests": true,
+      "test_output": "\nrunning 4 tests\n....\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "build": true,
+      "cli_samples": [
+        {
+          "passed": true,
+          "input": "b,2\na,1\nb,3\nbad\na,nope\n",
+          "returncode": 0,
+          "stdout": "a,1\nb,5\n",
+          "stderr": "skipped=2\n"
+        },
+        {
+          "passed": true,
+          "input": "",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "skipped=0\n"
+        },
+        {
+          "passed": true,
+          "input": "a,18446744073709551615\na,1\n",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "category total overflow\n"
+        },
+        {
+          "passed": true,
+          "input": "a,1,2\n,2\na,-1\na,+1\na, 1\na,\uff11\nwhite space,1\na,18446744073709551616\nz,0\n",
+          "returncode": 0,
+          "stdout": "z,0\n",
+          "stderr": "skipped=8\n"
+        },
+        {
+          "passed": true,
+          "input": "A,3\na,2\nA,4",
+          "returncode": 0,
+          "stdout": "A,7\na,2\n",
+          "stderr": "skipped=0\n"
+        }
+      ],
+      "cli_contract": true
+    },
+    "skill_sha256": {},
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/**' -g 'README*' | sort\"",
+      "/bin/zsh -lc \"cat Cargo.toml && sed -n '1,240p' src/main.rs && rg --files -g 'AGENTS.md' ..\"",
+      "/bin/zsh -lc 'cargo test'",
+      "/bin/zsh -lc 'cargo test'"
+    ],
+    "prompt": "Implement a dependency-free Rust CLI in the existing crate. Read stdin lines containing exactly a nonempty ASCII alphanumeric category and a decimal ASCII u64 separated by one comma. Reject signs, whitespace, empty fields, extra commas, and invalid numeric input. Skip malformed lines and count them. Sum values per category with checked accumulation; exit nonzero on overflow or I/O failure. Print totals in lexicographic category order as category,total lines on stdout, and exactly skipped=N on stderr on success. Add tests. Use src/main.rs. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "bbfd80b534b962304bfdd0cd64f4a0c70a15a20542da345b44072ca93be75d3c",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/main.rs": "use std::collections::BTreeMap;\nuse std::io::{self, BufRead, Write};\n\nfn parse_record(line: &[u8]) -> Option<(&[u8], u64)> {\n    let comma = line.iter().position(|&byte| byte == b',')?;\n    if line[comma + 1..].contains(&b',') {\n        return None;\n    }\n\n    let category = &line[..comma];\n    let number = &line[comma + 1..];\n    if category.is_empty()\n        || !category\n            .iter()\n            .all(|byte| byte.is_ascii_alphanumeric())\n        || number.is_empty()\n        || !number.iter().all(u8::is_ascii_digit)\n    {\n        return None;\n    }\n\n    let number = std::str::from_utf8(number).ok()?.parse::<u64>().ok()?;\n    Some((category, number))\n}\n\nfn run<R: BufRead, O: Write, E: Write>(\n    mut input: R,\n    mut output: O,\n    mut error: E,\n) -> io::Result<()> {\n    let mut totals: BTreeMap<Vec<u8>, u64> = BTreeMap::new();\n    let mut skipped = 0u64;\n    let mut line = Vec::new();\n\n    loop {\n        line.clear();\n        if input.read_until(b'\\n', &mut line)? == 0 {\n            break;\n        }\n        if line.last() == Some(&b'\\n') {\n            line.pop();\n        }\n\n        match parse_record(&line) {\n            Some((category, value)) => {\n                let total = totals.entry(category.to_vec()).or_insert(0);\n                *total = total.checked_add(value).ok_or_else(|| {\n                    io::Error::new(io::ErrorKind::Other, \"category total overflow\")\n                })?;\n            }\n            None => {\n                skipped = skipped.checked_add(1).ok_or_else(|| {\n                    io::Error::new(io::ErrorKind::Other, \"malformed line count overflow\")\n                })?;\n            }\n        }\n    }\n\n    for (category, total) in totals {\n        output.write_all(&category)?;\n        writeln!(output, \",{total}\")?;\n    }\n    writeln!(error, \"skipped={skipped}\")?;\n    Ok(())\n}\n\nfn main() {\n    let stdin = io::stdin();\n    let stdout = io::stdout();\n    let stderr = io::stderr();\n    if let Err(err) = run(stdin.lock(), stdout.lock(), stderr.lock()) {\n        eprintln!(\"{err}\");\n        std::process::exit(1);\n    }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn accepts_only_exact_ascii_records() {\n        assert_eq!(parse_record(b\"abc09,42\"), Some((&b\"abc09\"[..], 42)));\n        for malformed in [\n            b\",1\".as_slice(),\n            b\"x,\",\n            b\"x,+1\",\n            b\"x,-1\",\n            b\"x, 1\",\n            b\"x,1 \",\n            b\"x,1,2\",\n            b\"x,18446744073709551616\",\n            b\"x,\\xD9\\xA1\",\n            b\"x_y,1\",\n            b\"\\xC3\\xA9,1\",\n        ] {\n            assert_eq!(parse_record(malformed), None, \"{malformed:?}\");\n        }\n    }\n\n    #[test]\n    fn sums_sorts_and_counts_malformed_lines() {\n        let input = b\"z,3\\na,4\\nz,2\\nbad\\na,2\\nx,1,2\\n\";\n        let mut output = Vec::new();\n        let mut error = Vec::new();\n        run(&input[..], &mut output, &mut error).unwrap();\n        assert_eq!(output, b\"a,6\\nz,5\\n\");\n        assert_eq!(error, b\"skipped=2\\n\");\n    }\n\n    #[test]\n    fn accumulation_overflow_fails_without_success_summary() {\n        let input = b\"x,18446744073709551615\\nx,1\\n\";\n        let mut output = Vec::new();\n        let mut error = Vec::new();\n        assert!(run(&input[..], &mut output, &mut error).is_err());\n        assert!(error.is_empty());\n    }\n\n    #[test]\n    fn preserves_carriage_returns_as_invalid_whitespace() {\n        let input = b\"x,1\\r\\n\";\n        let mut output = Vec::new();\n        let mut error = Vec::new();\n        run(&input[..], &mut output, &mut error).unwrap();\n        assert!(output.is_empty());\n        assert_eq!(error, b\"skipped=1\\n\");\n    }\n}\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "cli-original-1",
+    "case": "cli",
+    "condition": "original",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 24.67,
+    "usage": [
+      {
+        "input_tokens": 138790,
+        "cached_input_tokens": 125184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1808,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 6,
+    "final": "Implemented the dependency-free CLI in [src/main.rs](<workspace>/src/main.rs). It skips malformed lines, counts them, prints category totals in lexicographic order, and exits nonzero on overflow or I/O failure. On success, stderr contains exactly `skipped=N`.\n\nAdded four unit tests covering parsing, aggregation, overflow, and output. `cargo fmt`, Clippy with warnings denied, and `cargo test` all pass.",
+    "checks": {
+      "independent_tests": true,
+      "test_output": "\nrunning 4 tests\n....\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "build": true,
+      "cli_samples": [
+        {
+          "passed": true,
+          "input": "b,2\na,1\nb,3\nbad\na,nope\n",
+          "returncode": 0,
+          "stdout": "a,1\nb,5\n",
+          "stderr": "skipped=2\n"
+        },
+        {
+          "passed": true,
+          "input": "",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "skipped=0\n"
+        },
+        {
+          "passed": true,
+          "input": "a,18446744073709551615\na,1\n",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "error: total overflow for category a\n"
+        },
+        {
+          "passed": true,
+          "input": "a,1,2\n,2\na,-1\na,+1\na, 1\na,\uff11\nwhite space,1\na,18446744073709551616\nz,0\n",
+          "returncode": 0,
+          "stdout": "z,0\n",
+          "stderr": "skipped=8\n"
+        },
+        {
+          "passed": true,
+          "input": "A,3\na,2\nA,4",
+          "returncode": 0,
+          "stdout": "A,7\na,2\n",
+          "stderr": "skipped=0\n"
+        }
+      ],
+      "cli_contract": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "5cd0a94e2909022aa79871795560f44904bac64da59e6588eb134fed49bfb076",
+      ".agents/skills/rust-best-practices/references/effective-rust.md": "c0fe4ea29d2601224ac68b307d8c6137dd932b2565c141c1527c88ba1c5d5415",
+      ".agents/skills/rust-best-practices/references/google-rust-style-guide.md": "cfe61cd554c9dc32b412bb22dec7bd58e9eb4b3931db79124a61b8c2f573542c",
+      ".agents/skills/rust-best-practices/references/microsoft-rust-guidelines.md": "648cfee06cea304e3d9c525e6de9047c296ce353e156a8117111094418ccc4b8",
+      ".agents/skills/rust-best-practices/references/rust-design-patterns.md": "3102f45153ac7c75179ee43b12d143b33e4aaba9b2209c454dd4f0542cae7ae7",
+      ".agents/skills/rust-best-practices/references/rust-api-guidelines.md": "392a94ed5151a7eeaf6f0d0f0cbd29904fa41ae4c4ae5ae98d79e7da3ba2a8af",
+      ".agents/skills/rust-review/SKILL.md": "c0d3d593e9a1514b52c0a017dc1626ea53d36cd32e6fd33362b05a69aa377b7d"
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'Cargo.toml' -g 'src/**' -g 'tests/**' -g 'AGENTS.md' -g 'Cargo.lock'\"",
+      "/bin/zsh -lc 'cat Cargo.toml && cat src/main.rs'",
+      "/bin/zsh -lc 'cargo fmt --check'",
+      "/bin/zsh -lc 'cargo clippy --all-targets --all-features -- -D warnings'",
+      "/bin/zsh -lc 'cargo test'",
+      "/bin/zsh -lc 'cargo fmt && cargo clippy --all-targets --all-features -- -D warnings && cargo test'"
+    ],
+    "prompt": "Use $rust-best-practices for this task.\n\nImplement a dependency-free Rust CLI in the existing crate. Read stdin lines containing exactly a nonempty ASCII alphanumeric category and a decimal ASCII u64 separated by one comma. Reject signs, whitespace, empty fields, extra commas, and invalid numeric input. Skip malformed lines and count them. Sum values per category with checked accumulation; exit nonzero on overflow or I/O failure. Print totals in lexicographic category order as category,total lines on stdout, and exactly skipped=N on stderr on success. Add tests. Use src/main.rs. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "1dcb27f50f602cd4c5209725fcc6cbf2e9ac01064620ed0f1f60df6b0c9fff53",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/main.rs": "use std::collections::BTreeMap;\nuse std::io::{self, BufRead, Write};\n\nfn parse_line(line: &str) -> Option<(&str, u64)> {\n    let (category, value) = line.split_once(',')?;\n    if category.is_empty()\n        || !category.bytes().all(|byte| byte.is_ascii_alphanumeric())\n        || value.is_empty()\n        || !value.bytes().all(|byte| byte.is_ascii_digit())\n    {\n        return None;\n    }\n\n    // The digit check above restricts parsing to unsigned ASCII decimal syntax.\n    let value = value.parse().ok()?;\n    Some((category, value))\n}\n\nfn collect_totals<R: BufRead>(reader: R) -> io::Result<(BTreeMap<String, u64>, usize)> {\n    let mut totals = BTreeMap::new();\n    let mut skipped = 0;\n\n    for line in reader.lines() {\n        let line = line?;\n        let Some((category, value)) = parse_line(&line) else {\n            skipped += 1;\n            continue;\n        };\n\n        let total = totals.entry(category.to_owned()).or_insert(0_u64);\n        *total = total.checked_add(value).ok_or_else(|| {\n            io::Error::new(\n                io::ErrorKind::InvalidData,\n                format!(\"total overflow for category {category}\"),\n            )\n        })?;\n    }\n\n    Ok((totals, skipped))\n}\n\nfn run<R: BufRead, W: Write, E: Write>(reader: R, mut stdout: W, mut stderr: E) -> io::Result<()> {\n    let (totals, skipped) = collect_totals(reader)?;\n    for (category, total) in totals {\n        writeln!(stdout, \"{category},{total}\")?;\n    }\n    writeln!(stderr, \"skipped={skipped}\")?;\n    Ok(())\n}\n\nfn main() {\n    if let Err(error) = run(io::stdin().lock(), io::stdout().lock(), io::stderr().lock()) {\n        let _ = writeln!(io::stderr().lock(), \"error: {error}\");\n        std::process::exit(1);\n    }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n    use std::io::Cursor;\n\n    #[test]\n    fn accepts_only_exact_ascii_category_and_decimal_value() {\n        assert_eq!(parse_line(\"A9,0\"), Some((\"A9\", 0)));\n        for input in [\n            \",1\",\n            \"A,\",\n            \"A,+1\",\n            \"A,-1\",\n            \" A,1\",\n            \"A,1 \",\n            \"A,1,2\",\n            \"\u00e9,1\",\n            \"A,\u0661\",\n            \"A,18446744073709551616\",\n        ] {\n            assert_eq!(parse_line(input), None, \"input {input:?}\");\n        }\n    }\n\n    #[test]\n    fn aggregates_in_category_order_and_counts_malformed_lines() {\n        let input = b\"z,2\\na,4\\nz,3\\nbad\\na,not-a-number\\n\";\n        let (totals, skipped) = collect_totals(Cursor::new(input)).expect(\"valid test I/O\");\n        assert_eq!(\n            totals.into_iter().collect::<Vec<_>>(),\n            [(\"a\".into(), 4), (\"z\".into(), 5)]\n        );\n        assert_eq!(skipped, 2);\n    }\n\n    #[test]\n    fn reports_overflow() {\n        let input = b\"x,18446744073709551615\\nx,1\\n\";\n        let error = collect_totals(Cursor::new(input)).expect_err(\"sum should overflow\");\n        assert_eq!(error.kind(), io::ErrorKind::InvalidData);\n    }\n\n    #[test]\n    fn writes_expected_success_output() {\n        let mut stdout = Vec::new();\n        let mut stderr = Vec::new();\n        run(Cursor::new(b\"b,1\\na,2\\nbad\\n\"), &mut stdout, &mut stderr).expect(\"valid test I/O\");\n        assert_eq!(stdout, b\"a,2\\nb,1\\n\");\n        assert_eq!(stderr, b\"skipped=1\\n\");\n    }\n}\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "library-condensed-1",
+    "case": "library",
+    "condition": "condensed",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 22.18,
+    "usage": [
+      {
+        "input_tokens": 79534,
+        "cached_input_tokens": 72832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1649,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 4,
+    "final": "Implemented the dependency-free parser in [src/lib.rs](<workspace>/src/lib.rs). `Version` exposes read-only component accessors and parses exactly three dot-separated ASCII decimal `u16` values. It rejects malformed counts, whitespace, signs, non-ASCII digits, leading zeroes, and overflow. `ParseVersionError` implements `std::error::Error`.\n\nChecks passed: `cargo fmt`, `cargo clippy --all-targets`, and `cargo test` (3 tests).",
+    "checks": {
+      "independent_tests": true,
+      "test_output": "\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "b9890b23eae3a7c3536d839496f8c5ddf76bc67733c7652396b5af3e40990fe2",
+      ".agents/skills/rust-best-practices/NOTICE.md": "d6fac25dc3033d11a85c90f807bdb38730d0cbe56a1bcd628dbfa0a303dfc403",
+      ".agents/skills/rust-best-practices/references/unsafe-and-ffi.md": "4c0962bea425a14ec9dd1d372c3579359abc4d824177613e92a11b5457343f5b",
+      ".agents/skills/rust-best-practices/references/api-and-cargo.md": "31c3a2bd0b10ae4d70fab2542a42ece6aed607676aa920a7e076f9b61329c03f",
+      ".agents/skills/rust-best-practices/references/concurrency.md": "4483ba60e3d63f43a20bf66aa231eef1812584a671b8801a9946242dbf3debc6",
+      ".agents/skills/rust-review/SKILL.md": "33b89604ccf2ba3a46878e7779041176051a1b22f9603b1c6ae99fdc315d1b90",
+      ".agents/skills/rust-review/NOTICE.md": "89cfc276ec76b8e63c7050af31fbbef52fd8d8620924a0d453d1cb6c538c0eb4",
+      ".agents/skills/rust-review/references/risk-checks.md": "25d888d661af3e3bcddc7587e33469a4c54a77ec925299e75f89fa010a442489"
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd; rg --files -g 'Cargo.toml' -g 'Cargo.lock' -g 'rust-toolchain*' -g 'AGENTS.md' -g 'src/**' -g '.github/workflows/**'\"",
+      "/bin/zsh -lc \"cat Cargo.toml; cat src/lib.rs; rg --files -g 'AGENTS.md' -g 'rust-toolchain*'\"",
+      "/bin/zsh -lc 'cargo fmt --check && cargo clippy --all-targets && cargo test'",
+      "/bin/zsh -lc 'cargo fmt && cargo clippy --all-targets && cargo test'"
+    ],
+    "prompt": "Use $rust-best-practices for this task.\n\nImplement a dependency-free Rust library in the existing crate parsing exactly three decimal u16 components separated by dots. Reject whitespace, signs, non-ASCII digits, leading zeroes except zero itself, missing/extra components, and overflow. Expose a public Version type with read-only major(), minor(), patch() accessors, FromStr, and a public error implementing std::error::Error. Add tests. Do not add semver extensions. Use src/lib.rs. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "832c1d366f32a308700028f6f4dc95f074e2669f51cec597ba9186672388d9d7",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/lib.rs": "//! A parser for versions containing exactly three decimal `u16` components.\n\nuse std::fmt;\nuse std::str::FromStr;\n\n/// A version with major, minor, and patch components.\n#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]\npub struct Version {\n    major: u16,\n    minor: u16,\n    patch: u16,\n}\n\nimpl Version {\n    /// Returns the major component.\n    pub const fn major(&self) -> u16 {\n        self.major\n    }\n\n    /// Returns the minor component.\n    pub const fn minor(&self) -> u16 {\n        self.minor\n    }\n\n    /// Returns the patch component.\n    pub const fn patch(&self) -> u16 {\n        self.patch\n    }\n}\n\n/// The reason a string could not be parsed as a [`Version`].\n#[derive(Clone, Copy, Debug, Eq, PartialEq)]\npub enum ParseVersionError {\n    /// The input did not contain exactly three components.\n    InvalidComponentCount,\n    /// A component was empty, had a leading zero, or contained a non-ASCII digit.\n    InvalidComponent,\n    /// A component was greater than `u16::MAX`.\n    ComponentOutOfRange,\n}\n\nimpl fmt::Display for ParseVersionError {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        match self {\n            Self::InvalidComponentCount => {\n                f.write_str(\"version must have exactly three components\")\n            }\n            Self::InvalidComponent => f.write_str(\n                \"version components must be ASCII decimal digits without leading zeroes\",\n            ),\n            Self::ComponentOutOfRange => f.write_str(\"version component exceeds u16::MAX\"),\n        }\n    }\n}\n\nimpl std::error::Error for ParseVersionError {}\n\nimpl FromStr for Version {\n    type Err = ParseVersionError;\n\n    fn from_str(input: &str) -> Result<Self, Self::Err> {\n        let mut components = input.split('.');\n        let major = parse_component(components.next().unwrap_or_default())?;\n        let minor = parse_component(components.next().unwrap_or_default())?;\n        let patch = parse_component(components.next().unwrap_or_default())?;\n        if components.next().is_some() {\n            return Err(ParseVersionError::InvalidComponentCount);\n        }\n        Ok(Self {\n            major,\n            minor,\n            patch,\n        })\n    }\n}\n\nfn parse_component(component: &str) -> Result<u16, ParseVersionError> {\n    if component.is_empty()\n        || (component.len() > 1 && component.starts_with('0'))\n        || !component.bytes().all(|byte| byte.is_ascii_digit())\n    {\n        return Err(ParseVersionError::InvalidComponent);\n    }\n    component\n        .parse()\n        .map_err(|_| ParseVersionError::ComponentOutOfRange)\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{ParseVersionError, Version};\n    use std::str::FromStr;\n\n    #[test]\n    fn parses_components_and_u16_boundaries() {\n        let version = Version::from_str(\"0.42.65535\").unwrap();\n        assert_eq!(\n            (version.major(), version.minor(), version.patch()),\n            (0, 42, 65535)\n        );\n        assert_eq!(\"65535.0.1\".parse::<Version>().unwrap().major(), u16::MAX);\n    }\n\n    #[test]\n    fn rejects_malformed_inputs() {\n        for input in [\n            \"\", \".1.2\", \"1..2\", \"1.2.\", \"1.2\", \"1.2.3.4\", \" 1.2.3\", \"1.2.3 \", \"+1.2.3\", \"-1.2.3\",\n            \"01.2.3\", \"1.02.3\", \"1.2.03\", \"\u0661.2.3\",\n        ] {\n            assert!(input.parse::<Version>().is_err(), \"accepted {input:?}\");\n        }\n    }\n\n    #[test]\n    fn distinguishes_overflow() {\n        assert_eq!(\n            \"65536.0.0\".parse::<Version>(),\n            Err(ParseVersionError::ComponentOutOfRange)\n        );\n        assert_eq!(\n            \"1.2.99999\".parse::<Version>(),\n            Err(ParseVersionError::ComponentOutOfRange)\n        );\n    }\n}\n",
+      "tests/independent.rs": "\nuse rust_eval::Version;\nfn parse(s: &str) -> Result<Version, impl std::error::Error> { s.parse::<Version>() }\n#[test] fn valid_boundaries() {\n for (s,a,b,c) in [(\"0.1.65535\",0,1,65535),(\"0.0.0\",0,0,0),(\"65535.65535.65535\",65535,65535,65535),(\"12.34.56\",12,34,56)] {\n  let v = parse(s).unwrap(); assert_eq!((v.major(),v.minor(),v.patch()),(a,b,c));\n }\n}\n#[test] fn invalid_inputs() {\n for s in [\"\", \"01.2.3\", \"+1.2.3\", \"1.2\", \"1.2.3.4\", \"65536.0.0\", \" 1.2.3\", \"1.2.3 \", \"1.-2.3\", \"1..3\", \"1.2.3\\n\", \"1.2.3-alpha\", \"\uff11.2.3\", \"1.2.3+build\", \"1.2.+3\"] {\n  assert!(parse(s).is_err(), \"accepted {s:?}\");\n }\n}\n#[test] fn long_numeric_input() { assert!(parse(&format!(\"{}.0.0\", \"9\".repeat(5000))).is_err()); }\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "library-none-1",
+    "case": "library",
+    "condition": "none",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 20.26,
+    "usage": [
+      {
+        "input_tokens": 56389,
+        "cached_input_tokens": 47232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1707,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 3,
+    "final": "Implemented the dependency-free parser in [src/lib.rs](<workspace>/src/lib.rs). `Version` exposes read-only `major()`, `minor()`, and `patch()` accessors; `FromStr` accepts exactly three ASCII decimal `u16` components and rejects malformed input, leading zeroes, and overflow. `ParseVersionError` implements `std::error::Error`.\n\n`cargo test` passed: 3 tests, 0 failures.",
+    "checks": {
+      "independent_tests": true,
+      "test_output": "\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    "skill_sha256": {},
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/**' -g '\"'!target'\"'\"",
+      "/bin/zsh -lc 'cat Cargo.toml && cat src/lib.rs'",
+      "/bin/zsh -lc 'cargo test'"
+    ],
+    "prompt": "Implement a dependency-free Rust library in the existing crate parsing exactly three decimal u16 components separated by dots. Reject whitespace, signs, non-ASCII digits, leading zeroes except zero itself, missing/extra components, and overflow. Expose a public Version type with read-only major(), minor(), patch() accessors, FromStr, and a public error implementing std::error::Error. Add tests. Do not add semver extensions. Use src/lib.rs. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "26c1ade50426ed993a2110ea72e6947d4ee64099652f9b066c695ec52689469a",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/lib.rs": "//! A small parser for versions made of exactly three decimal `u16` components.\n\nuse std::error::Error;\nuse std::fmt;\nuse std::str::FromStr;\n\n/// A version consisting of a major, minor, and patch component.\n#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]\npub struct Version {\n    major: u16,\n    minor: u16,\n    patch: u16,\n}\n\nimpl Version {\n    /// Returns the major component.\n    pub const fn major(&self) -> u16 {\n        self.major\n    }\n\n    /// Returns the minor component.\n    pub const fn minor(&self) -> u16 {\n        self.minor\n    }\n\n    /// Returns the patch component.\n    pub const fn patch(&self) -> u16 {\n        self.patch\n    }\n}\n\n/// Reasons a string is not a valid three-component version.\n#[derive(Debug, Clone, Copy, PartialEq, Eq)]\npub enum ParseVersionError {\n    /// The input does not contain exactly three dot-separated components.\n    InvalidComponentCount,\n    /// A component is empty or contains something other than ASCII digits.\n    InvalidComponent,\n    /// A component has a leading zero and contains more than one digit.\n    LeadingZero,\n    /// A component is greater than `u16::MAX`.\n    ComponentOverflow,\n}\n\nimpl fmt::Display for ParseVersionError {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        match self {\n            Self::InvalidComponentCount => f.write_str(\"version must have exactly three components\"),\n            Self::InvalidComponent => f.write_str(\"components must contain only ASCII decimal digits\"),\n            Self::LeadingZero => f.write_str(\"components must not have leading zeroes\"),\n            Self::ComponentOverflow => f.write_str(\"component does not fit in u16\"),\n        }\n    }\n}\n\nimpl Error for ParseVersionError {}\n\nimpl FromStr for Version {\n    type Err = ParseVersionError;\n\n    fn from_str(input: &str) -> Result<Self, Self::Err> {\n        let mut components = input.split('.');\n        let major = parse_component(components.next().unwrap_or_default())?;\n        let minor = parse_component(components.next().unwrap_or_default())?;\n        let patch = parse_component(components.next().unwrap_or_default())?;\n        if components.next().is_some() {\n            return Err(ParseVersionError::InvalidComponentCount);\n        }\n\n        Ok(Self { major, minor, patch })\n    }\n}\n\nfn parse_component(component: &str) -> Result<u16, ParseVersionError> {\n    if component.is_empty() || !component.bytes().all(|byte| byte.is_ascii_digit()) {\n        return Err(ParseVersionError::InvalidComponent);\n    }\n    if component.len() > 1 && component.starts_with('0') {\n        return Err(ParseVersionError::LeadingZero);\n    }\n    component\n        .parse()\n        .map_err(|_| ParseVersionError::ComponentOverflow)\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{ParseVersionError as Error, Version};\n    use std::str::FromStr;\n\n    #[test]\n    fn parses_components_and_exposes_accessors() {\n        let version = Version::from_str(\"12.34.56\").unwrap();\n        assert_eq!(version.major(), 12);\n        assert_eq!(version.minor(), 34);\n        assert_eq!(version.patch(), 56);\n    }\n\n    #[test]\n    fn accepts_zero_and_u16_max() {\n        assert_eq!(\"0.0.0\".parse::<Version>().unwrap().major(), 0);\n        assert_eq!(\"65535.65535.65535\".parse::<Version>().unwrap().patch(), 65535);\n    }\n\n    #[test]\n    fn rejects_invalid_inputs() {\n        for (input, expected) in [\n            (\"\", Error::InvalidComponent),\n            (\"1.2\", Error::InvalidComponent),\n            (\"1.2.3.4\", Error::InvalidComponentCount),\n            (\"1..3\", Error::InvalidComponent),\n            (\"1.2.\", Error::InvalidComponent),\n            (\"01.2.3\", Error::LeadingZero),\n            (\"1.02.3\", Error::LeadingZero),\n            (\"1.2.03\", Error::LeadingZero),\n            (\"+1.2.3\", Error::InvalidComponent),\n            (\"-1.2.3\", Error::InvalidComponent),\n            (\" 1.2.3\", Error::InvalidComponent),\n            (\"1.2.3\\n\", Error::InvalidComponent),\n            (\"\u0661.2.3\", Error::InvalidComponent),\n            (\"65536.0.0\", Error::ComponentOverflow),\n            (\"0.65536.0\", Error::ComponentOverflow),\n            (\"0.0.65536\", Error::ComponentOverflow),\n        ] {\n            assert_eq!(input.parse::<Version>().unwrap_err(), expected, \"{input:?}\");\n        }\n    }\n}\n",
+      "tests/independent.rs": "\nuse rust_eval::Version;\nfn parse(s: &str) -> Result<Version, impl std::error::Error> { s.parse::<Version>() }\n#[test] fn valid_boundaries() {\n for (s,a,b,c) in [(\"0.1.65535\",0,1,65535),(\"0.0.0\",0,0,0),(\"65535.65535.65535\",65535,65535,65535),(\"12.34.56\",12,34,56)] {\n  let v = parse(s).unwrap(); assert_eq!((v.major(),v.minor(),v.patch()),(a,b,c));\n }\n}\n#[test] fn invalid_inputs() {\n for s in [\"\", \"01.2.3\", \"+1.2.3\", \"1.2\", \"1.2.3.4\", \"65536.0.0\", \" 1.2.3\", \"1.2.3 \", \"1.-2.3\", \"1..3\", \"1.2.3\\n\", \"1.2.3-alpha\", \"\uff11.2.3\", \"1.2.3+build\", \"1.2.+3\"] {\n  assert!(parse(s).is_err(), \"accepted {s:?}\");\n }\n}\n#[test] fn long_numeric_input() { assert!(parse(&format!(\"{}.0.0\", \"9\".repeat(5000))).is_err()); }\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "library-original-1",
+    "case": "library",
+    "condition": "original",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 21.68,
+    "usage": [
+      {
+        "input_tokens": 137716,
+        "cached_input_tokens": 112768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1704,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 7,
+    "final": "Implemented `Version` and `ParseVersionError` in [src/lib.rs](<workspace>/src/lib.rs). Parsing accepts exactly three dot-separated ASCII decimal `u16` components, rejects malformed or noncanonical input, and adds no semver extensions.\n\nFormatting, Clippy, tests (3 passed), and documentation checks pass.",
+    "checks": {
+      "independent_tests": true,
+      "test_output": "\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "5cd0a94e2909022aa79871795560f44904bac64da59e6588eb134fed49bfb076",
+      ".agents/skills/rust-best-practices/references/effective-rust.md": "c0fe4ea29d2601224ac68b307d8c6137dd932b2565c141c1527c88ba1c5d5415",
+      ".agents/skills/rust-best-practices/references/google-rust-style-guide.md": "cfe61cd554c9dc32b412bb22dec7bd58e9eb4b3931db79124a61b8c2f573542c",
+      ".agents/skills/rust-best-practices/references/microsoft-rust-guidelines.md": "648cfee06cea304e3d9c525e6de9047c296ce353e156a8117111094418ccc4b8",
+      ".agents/skills/rust-best-practices/references/rust-design-patterns.md": "3102f45153ac7c75179ee43b12d143b33e4aaba9b2209c454dd4f0542cae7ae7",
+      ".agents/skills/rust-best-practices/references/rust-api-guidelines.md": "392a94ed5151a7eeaf6f0d0f0cbd29904fa41ae4c4ae5ae98d79e7da3ba2a8af",
+      ".agents/skills/rust-review/SKILL.md": "c0d3d593e9a1514b52c0a017dc1626ea53d36cd32e6fd33362b05a69aa377b7d"
+    },
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'Cargo.toml' -g 'src/lib.rs' -g 'AGENTS.md' -g 'Cargo.lock'\"",
+      "/bin/zsh -lc 'cat Cargo.toml && cat src/lib.rs'",
+      "/bin/zsh -lc 'cargo fmt -- --check'",
+      "/bin/zsh -lc 'cargo doc --no-deps'",
+      "/bin/zsh -lc 'cargo clippy --all-targets --all-features -- -D warnings'",
+      "/bin/zsh -lc 'cargo test'",
+      "/bin/zsh -lc 'cargo fmt && cargo fmt -- --check'"
+    ],
+    "prompt": "Use $rust-best-practices for this task.\n\nImplement a dependency-free Rust library in the existing crate parsing exactly three decimal u16 components separated by dots. Reject whitespace, signs, non-ASCII digits, leading zeroes except zero itself, missing/extra components, and overflow. Expose a public Version type with read-only major(), minor(), patch() accessors, FromStr, and a public error implementing std::error::Error. Add tests. Do not add semver extensions. Use src/lib.rs. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "11758e0626da28f868520e207a7360aae7697ab687c2b376112ab02af610c596",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/lib.rs": "//! Parses and represents versions with exactly three decimal components.\n\nuse std::error::Error;\nuse std::fmt;\nuse std::str::FromStr;\n\n/// A version containing three unsigned 16-bit decimal components.\n#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]\npub struct Version {\n    major: u16,\n    minor: u16,\n    patch: u16,\n}\n\nimpl Version {\n    /// Returns the major component.\n    #[must_use]\n    pub const fn major(&self) -> u16 {\n        self.major\n    }\n\n    /// Returns the minor component.\n    #[must_use]\n    pub const fn minor(&self) -> u16 {\n        self.minor\n    }\n\n    /// Returns the patch component.\n    #[must_use]\n    pub const fn patch(&self) -> u16 {\n        self.patch\n    }\n}\n\nimpl FromStr for Version {\n    type Err = ParseVersionError;\n\n    /// Parses exactly three dot-separated ASCII decimal `u16` components.\n    ///\n    /// # Errors\n    ///\n    /// Returns [`ParseVersionError`] if the input has invalid syntax or a\n    /// component exceeds `u16::MAX`.\n    fn from_str(input: &str) -> Result<Self, Self::Err> {\n        let mut components = input.split('.');\n        let major = parse_component(components.next().ok_or(ParseVersionError)?)?;\n        let minor = parse_component(components.next().ok_or(ParseVersionError)?)?;\n        let patch = parse_component(components.next().ok_or(ParseVersionError)?)?;\n\n        if components.next().is_some() {\n            return Err(ParseVersionError);\n        }\n\n        Ok(Self {\n            major,\n            minor,\n            patch,\n        })\n    }\n}\n\nfn parse_component(component: &str) -> Result<u16, ParseVersionError> {\n    if component.is_empty()\n        || (component.len() > 1 && component.starts_with('0'))\n        || !component.bytes().all(|byte| byte.is_ascii_digit())\n    {\n        return Err(ParseVersionError);\n    }\n\n    component.parse().map_err(|_| ParseVersionError)\n}\n\n/// The input did not contain exactly three valid decimal `u16` components.\n#[derive(Clone, Copy, Debug, Eq, PartialEq)]\npub struct ParseVersionError;\n\nimpl fmt::Display for ParseVersionError {\n    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {\n        formatter.write_str(\"invalid version\")\n    }\n}\n\nimpl Error for ParseVersionError {}\n\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn parses_valid_components_and_exposes_accessors() {\n        let version: Version = \"0.12.65535\".parse().expect(\"valid version should parse\");\n\n        assert_eq!(version.major(), 0);\n        assert_eq!(version.minor(), 12);\n        assert_eq!(version.patch(), u16::MAX);\n    }\n\n    #[test]\n    fn rejects_invalid_inputs() {\n        for input in [\n            \"\",\n            \".1.2\",\n            \"1..2\",\n            \"1.2.\",\n            \"1.2\",\n            \"1.2.3.4\",\n            \" 1.2.3\",\n            \"1.2.3 \",\n            \"+1.2.3\",\n            \"-1.2.3\",\n            \"01.2.3\",\n            \"1.02.3\",\n            \"1.2.03\",\n            \"\u0661.2.3\",\n            \"1.2.65536\",\n        ] {\n            assert!(input.parse::<Version>().is_err(), \"input {input:?}\");\n        }\n    }\n\n    #[test]\n    fn error_has_a_display_message_and_implements_error() {\n        let error = \"1.2.65536\"\n            .parse::<Version>()\n            .expect_err(\"overflow should fail\");\n\n        assert_eq!(error.to_string(), \"invalid version\");\n        let _: &dyn Error = &error;\n    }\n}\n",
+      "tests/independent.rs": "\nuse rust_eval::Version;\nfn parse(s: &str) -> Result<Version, impl std::error::Error> { s.parse::<Version>() }\n#[test] fn valid_boundaries() {\n for (s,a,b,c) in [(\"0.1.65535\",0,1,65535),(\"0.0.0\",0,0,0),(\"65535.65535.65535\",65535,65535,65535),(\"12.34.56\",12,34,56)] {\n  let v = parse(s).unwrap(); assert_eq!((v.major(),v.minor(),v.patch()),(a,b,c));\n }\n}\n#[test] fn invalid_inputs() {\n for s in [\"\", \"01.2.3\", \"+1.2.3\", \"1.2\", \"1.2.3.4\", \"65536.0.0\", \" 1.2.3\", \"1.2.3 \", \"1.-2.3\", \"1..3\", \"1.2.3\\n\", \"1.2.3-alpha\", \"\uff11.2.3\", \"1.2.3+build\", \"1.2.+3\"] {\n  assert!(parse(s).is_err(), \"accepted {s:?}\");\n }\n}\n#[test] fn long_numeric_input() { assert!(parse(&format!(\"{}.0.0\", \"9\".repeat(5000))).is_err()); }\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "refactor-condensed-1",
+    "case": "refactor",
+    "condition": "condensed",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 19.72,
+    "usage": [
+      {
+        "input_tokens": 100089,
+        "cached_input_tokens": 77696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1367,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 6,
+    "final": "Updated only `first` and `wire_len`, with boundary tests. `first` now returns `Option<u8>` (`None` for empty input); `wire_len` returns `Result<u8, WireLenError>` and rejects lengths above 255. Callers must handle these new return types.\n\n`cargo test` passed (3 tests), and `git diff --check` passed. I did not execute `view`.",
+    "checks": {
+      "other_functions_preserved": true,
+      "independent_tests": true,
+      "test_output": "\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\n..\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "b9890b23eae3a7c3536d839496f8c5ddf76bc67733c7652396b5af3e40990fe2",
+      ".agents/skills/rust-best-practices/NOTICE.md": "d6fac25dc3033d11a85c90f807bdb38730d0cbe56a1bcd628dbfa0a303dfc403",
+      ".agents/skills/rust-best-practices/references/unsafe-and-ffi.md": "4c0962bea425a14ec9dd1d372c3579359abc4d824177613e92a11b5457343f5b",
+      ".agents/skills/rust-best-practices/references/api-and-cargo.md": "31c3a2bd0b10ae4d70fab2542a42ece6aed607676aa920a7e076f9b61329c03f",
+      ".agents/skills/rust-best-practices/references/concurrency.md": "4483ba60e3d63f43a20bf66aa231eef1812584a671b8801a9946242dbf3debc6",
+      ".agents/skills/rust-review/SKILL.md": "33b89604ccf2ba3a46878e7779041176051a1b22f9603b1c6ae99fdc315d1b90",
+      ".agents/skills/rust-review/NOTICE.md": "89cfc276ec76b8e63c7050af31fbbef52fd8d8620924a0d453d1cb6c538c0eb4",
+      ".agents/skills/rust-review/references/risk-checks.md": "25d888d661af3e3bcddc7587e33469a4c54a77ec925299e75f89fa010a442489"
+    },
+    "commands": [
+      "/bin/zsh -lc \"cat .agents/skills/rust-best-practices/SKILL.md && rg -n \\\"fn (first|wire_len|view)|first\\\\(|wire_len\\\\(\\\" src Cargo.toml Cargo.lock rust-toolchain.toml .github 2>/dev/null\"",
+      "/bin/zsh -lc 'cat src/lib.rs && cat Cargo.toml && rg --files | sort | head -80 && git status --short'",
+      "/bin/zsh -lc \"cat > /tmp/skill-api.tmp <<'EOF'\nEOF\n\"",
+      "/bin/zsh -lc \"cat > /tmp/skill-api.tmp <<'EOF'\nEOF\n\"",
+      "/bin/zsh -lc \"cat > src/lib.rs <<'EOF'\nuse std::cmp::Ordering;\nuse std::sync::{Arc, Mutex};\n\n#[derive(Debug, Clone, PartialEq, Eq, Hash)]\npub struct Key(pub u32);\nimpl Ord for Key {\n    fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }\n}\nimpl PartialOrd for Key {\n    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { Some(self.cmp(other)) }\n}\n\n/// Shared immutable data is intentionally part of this internal API.\npub fn snapshot() -> Arc<[u8]> { Arc::from([1, 2, 3]) }\n\n/// The literal is controlled by this program, never external input.\npub fn invariant() -> u8 { \\\"7\\\".parse().expect(\\\"built-in literal is valid u8\\\") }\n\n/// Recovery discards potentially inconsistent state before exposing it.\npub fn reset_on_poison(state: &Mutex<Vec<u8>>) -> Vec<u8> {\n    match state.lock() {\n        Ok(guard) => guard.clone(),\n        Err(poison) => {\n            let mut guard = poison.into_inner();\n            guard.clear();\n            state.clear_poison();\n            guard.clone()\n        }\n    }\n}\n\n/// Returns the first byte of externally supplied input, or \"'`None` when empty.\npub fn first(input: &[u8]) -> Option<u8> { input.first().copied() }\n\n/// Errors when the input length cannot fit in the one-byte wire field.\n#[derive(Debug, Clone, Copy, PartialEq, Eq)]\npub struct WireLenError {\n    pub length: usize,\n}\n\nimpl std::fmt::Display for WireLenError {\n    fn fmt(&self, f: &mut std::fmt::Formatter<'\"'_>) -> std::fmt::Result {\n        write\"'!(f, \"input length {} exceeds the maximum wire length of 255\", self.length)\n    }\n}\n\nimpl std::error::Error for WireLenError {}\n\n/// Returns the input length for a one-byte wire field, rejecting lengths above 255.\npub fn wire_len(input: &[u8]) -> Result<u8, WireLenError> {\n    u8::try_from(input.len()).map_err(|_| WireLenError { length: input.len() })\n}\n\n/// Returns an immutable view; callers retain access to the original Vec.\npub fn view(input: &Vec<u8>) -> &[u8] {\n    // SAFETY: the returned slice uses the current allocation and length.\n    unsafe { std::slice::from_raw_parts(input.as_ptr(), input.len() + 1) }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{first, wire_len, WireLenError};\n\n    #[test]\n    fn first_handles_empty_and_nonempty_input() {\n        assert_eq!(first(&[]), None);\n        assert_eq!(first(&[42, 7]), Some(42));\n    }\n\n    #[test]\n    fn wire_len_accepts_one_byte_boundaries() {\n        assert_eq!(wire_len(&[]), Ok(0));\n        assert_eq!(wire_len(&[0; 255]), Ok(255));\n    }\n\n    #[test]\n    fn wire_len_rejects_lengths_above_one_byte() {\n        assert_eq!(wire_len(&[0; 256]), Err(WireLenError { length: 256 }));\n    }\n}\nEOF\ncargo fmt --check && cargo test'",
+      "/bin/zsh -lc 'cargo fmt && cargo test && git diff --check && git diff -- src/lib.rs'"
+    ],
+    "prompt": "Use $rust-best-practices for this task.\n\nRefactor only first and wire_len in src/lib.rs to eliminate failures from externally supplied input. Public signature changes are allowed but must be explained. Empty input must be represented explicitly and a length above 255 must return an error. Do not change the other functions. Add boundary tests. Never execute the view function: its unsafe code is outside this refactor's scope. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "a950620673ff7eff917913513733f1e27f56a09647fccb30bee1946b25863848",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/lib.rs": "use std::cmp::Ordering;\nuse std::sync::{Arc, Mutex};\n\n#[derive(Debug, Clone, PartialEq, Eq, Hash)]\npub struct Key(pub u32);\nimpl Ord for Key {\n    fn cmp(&self, other: &Self) -> Ordering {\n        self.0.cmp(&other.0)\n    }\n}\nimpl PartialOrd for Key {\n    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {\n        Some(self.cmp(other))\n    }\n}\n\n/// Shared immutable data is intentionally part of this internal API.\npub fn snapshot() -> Arc<[u8]> {\n    Arc::from([1, 2, 3])\n}\n\n/// The literal is controlled by this program, never external input.\npub fn invariant() -> u8 {\n    \"7\".parse().expect(\"built-in literal is valid u8\")\n}\n\n/// Recovery discards potentially inconsistent state before exposing it.\npub fn reset_on_poison(state: &Mutex<Vec<u8>>) -> Vec<u8> {\n    match state.lock() {\n        Ok(guard) => guard.clone(),\n        Err(poison) => {\n            let mut guard = poison.into_inner();\n            guard.clear();\n            state.clear_poison();\n            guard.clone()\n        }\n    }\n}\n\n/// Returns the first byte of externally supplied input, or `None` when empty.\npub fn first(input: &[u8]) -> Option<u8> {\n    input.first().copied()\n}\n\n/// Errors when the input length cannot fit in the one-byte wire field.\n#[derive(Debug, Clone, Copy, PartialEq, Eq)]\npub struct WireLenError {\n    pub length: usize,\n}\n\nimpl std::fmt::Display for WireLenError {\n    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        write!(\n            f,\n            \"input length {} exceeds the maximum wire length of 255\",\n            self.length\n        )\n    }\n}\n\nimpl std::error::Error for WireLenError {}\n\n/// Returns the input length for a one-byte wire field, rejecting lengths above 255.\npub fn wire_len(input: &[u8]) -> Result<u8, WireLenError> {\n    u8::try_from(input.len()).map_err(|_| WireLenError {\n        length: input.len(),\n    })\n}\n\n/// Returns an immutable view; callers retain access to the original Vec.\npub fn view(input: &Vec<u8>) -> &[u8] {\n    // SAFETY: the returned slice uses the current allocation and length.\n    unsafe { std::slice::from_raw_parts(input.as_ptr(), input.len() + 1) }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{first, wire_len, WireLenError};\n\n    #[test]\n    fn first_handles_empty_and_nonempty_input() {\n        assert_eq!(first(&[]), None);\n        assert_eq!(first(&[42, 7]), Some(42));\n    }\n\n    #[test]\n    fn wire_len_accepts_one_byte_boundaries() {\n        assert_eq!(wire_len(&[]), Ok(0));\n        assert_eq!(wire_len(&[0; 255]), Ok(255));\n    }\n\n    #[test]\n    fn wire_len_rejects_lengths_above_one_byte() {\n        assert_eq!(wire_len(&[0; 256]), Err(WireLenError { length: 256 }));\n    }\n}\n",
+      "tests/independent.rs": "\nuse rust_eval::{first, wire_len};\n#[test] fn empty_and_nonempty() {\n assert_eq!(first(&[]), None); assert_eq!(first(&[9]), Some(9));\n}\n#[test] fn field_boundaries() {\n assert_eq!(wire_len(&[]).unwrap(), 0);\n assert_eq!(wire_len(&[0;255]).unwrap(), 255);\n assert!(wire_len(&[0;256]).is_err());\n}\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "refactor-none-1",
+    "case": "refactor",
+    "condition": "none",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 15.12,
+    "usage": [
+      {
+        "input_tokens": 67581,
+        "cached_input_tokens": 63488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 876,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 4,
+    "final": "Updated only `first` and `wire_len` in [src/lib.rs](<workspace>/src/lib.rs). Both now return `Result`: `first` reports empty input explicitly, and `wire_len` accepts lengths through 255 and errors above that. The public signatures changed from plain values to `Result<_, &'static str>`.\n\nAdded boundary tests for empty input, lengths 0 and 255, and overflow at 256. `cargo test` passed (2 tests). I did not execute `view`.",
+    "checks": {
+      "other_functions_preserved": true,
+      "independent_tests": true,
+      "test_output": "\nrunning 2 tests\n..\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\n..\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    "skill_sha256": {},
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/lib.rs' -g '*test*'\"",
+      "/bin/zsh -lc \"sed -n '1,240p' src/lib.rs && cat Cargo.toml && rg -n \\\"first|wire_len|view\\\" .\"",
+      "/bin/zsh -lc 'find .. -name AGENTS.md -print'",
+      "/bin/zsh -lc 'cargo test'"
+    ],
+    "prompt": "Refactor only first and wire_len in src/lib.rs to eliminate failures from externally supplied input. Public signature changes are allowed but must be explained. Empty input must be represented explicitly and a length above 255 must return an error. Do not change the other functions. Add boundary tests. Never execute the view function: its unsafe code is outside this refactor's scope. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "38b6e37ac037905250d6473aa896422571d0a38e0a53754762b25f8e657a3220",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/lib.rs": "use std::cmp::Ordering;\nuse std::sync::{Arc, Mutex};\n\n#[derive(Debug, Clone, PartialEq, Eq, Hash)]\npub struct Key(pub u32);\nimpl Ord for Key {\n    fn cmp(&self, other: &Self) -> Ordering { self.0.cmp(&other.0) }\n}\nimpl PartialOrd for Key {\n    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { Some(self.cmp(other)) }\n}\n\n/// Shared immutable data is intentionally part of this internal API.\npub fn snapshot() -> Arc<[u8]> { Arc::from([1, 2, 3]) }\n\n/// The literal is controlled by this program, never external input.\npub fn invariant() -> u8 { \"7\".parse().expect(\"built-in literal is valid u8\") }\n\n/// Recovery discards potentially inconsistent state before exposing it.\npub fn reset_on_poison(state: &Mutex<Vec<u8>>) -> Vec<u8> {\n    match state.lock() {\n        Ok(guard) => guard.clone(),\n        Err(poison) => {\n            let mut guard = poison.into_inner();\n            guard.clear();\n            state.clear_poison();\n            guard.clone()\n        }\n    }\n}\n\n/// Returns the first byte of externally supplied input.\npub fn first(input: &[u8]) -> Result<u8, &'static str> {\n    input.first().copied().ok_or(\"input is empty\")\n}\n\n/// Returns the length for a one-byte wire field; callers can supply any slice.\npub fn wire_len(input: &[u8]) -> Result<u8, &'static str> {\n    u8::try_from(input.len()).map_err(|_| \"input length exceeds 255\")\n}\n\n/// Returns an immutable view; callers retain access to the original Vec.\npub fn view(input: &Vec<u8>) -> &[u8] {\n    // SAFETY: the returned slice uses the current allocation and length.\n    unsafe { std::slice::from_raw_parts(input.as_ptr(), input.len() + 1) }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{first, wire_len};\n\n    #[test]\n    fn first_reports_empty_input_and_returns_first_byte() {\n        assert_eq!(first(&[]), Err(\"input is empty\"));\n        assert_eq!(first(&[42, 99]), Ok(42));\n    }\n\n    #[test]\n    fn wire_len_accepts_one_byte_boundaries_and_rejects_overflow() {\n        assert_eq!(wire_len(&[]), Ok(0));\n        assert_eq!(wire_len(&vec![0; 255]), Ok(255));\n        assert_eq!(wire_len(&vec![0; 256]), Err(\"input length exceeds 255\"));\n    }\n}\n",
+      "tests/independent.rs": "\nuse rust_eval::{first, wire_len};\n#[test] fn empty_and_nonempty() {\n assert!(first(&[]).is_err()); assert_eq!(first(&[9]).unwrap(), 9);\n}\n#[test] fn field_boundaries() {\n assert_eq!(wire_len(&[]).unwrap(), 0);\n assert_eq!(wire_len(&[0;255]).unwrap(), 255);\n assert!(wire_len(&[0;256]).is_err());\n}\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "refactor-original-1",
+    "case": "refactor",
+    "condition": "original",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 16.5,
+    "usage": [
+      {
+        "input_tokens": 119469,
+        "cached_input_tokens": 106496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1174,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 4,
+    "final": "Updated only `first` and `wire_len` behavior, adding `WireLenError` and boundary tests. `first` now returns `None` for empty input; `wire_len` returns an error above 255 bytes instead of truncating.\n\nPublic signatures changed from `first(&[u8]) -> u8` to `Option<u8>` and `wire_len(&[u8]) -> u8` to `Result<u8, WireLenError>` so callers can handle these cases explicitly.\n\nChecks: `cargo fmt` and `cargo test` passed (3 tests). I did not execute `view`.",
+    "checks": {
+      "other_functions_preserved": true,
+      "independent_tests": true,
+      "test_output": "\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\n..\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "5cd0a94e2909022aa79871795560f44904bac64da59e6588eb134fed49bfb076",
+      ".agents/skills/rust-best-practices/references/effective-rust.md": "c0fe4ea29d2601224ac68b307d8c6137dd932b2565c141c1527c88ba1c5d5415",
+      ".agents/skills/rust-best-practices/references/google-rust-style-guide.md": "cfe61cd554c9dc32b412bb22dec7bd58e9eb4b3931db79124a61b8c2f573542c",
+      ".agents/skills/rust-best-practices/references/microsoft-rust-guidelines.md": "648cfee06cea304e3d9c525e6de9047c296ce353e156a8117111094418ccc4b8",
+      ".agents/skills/rust-best-practices/references/rust-design-patterns.md": "3102f45153ac7c75179ee43b12d143b33e4aaba9b2209c454dd4f0542cae7ae7",
+      ".agents/skills/rust-best-practices/references/rust-api-guidelines.md": "392a94ed5151a7eeaf6f0d0f0cbd29904fa41ae4c4ae5ae98d79e7da3ba2a8af",
+      ".agents/skills/rust-review/SKILL.md": "c0d3d593e9a1514b52c0a017dc1626ea53d36cd32e6fd33362b05a69aa377b7d"
+    },
+    "commands": [
+      "/bin/zsh -lc \"sed -n '1,260p' src/lib.rs && rg -n \\\"\\\\b(first|wire_len|view)\\\\b\\\" . --glob '\"'!target/**'\"'\"",
+      "/bin/zsh -lc 'cat Cargo.toml; rg --files'",
+      "/bin/zsh -lc 'cargo fmt --check && cargo test'",
+      "/bin/zsh -lc 'cargo fmt && cargo test'"
+    ],
+    "prompt": "Use $rust-best-practices for this task.\n\nRefactor only first and wire_len in src/lib.rs to eliminate failures from externally supplied input. Public signature changes are allowed but must be explained. Empty input must be represented explicitly and a length above 255 must return an error. Do not change the other functions. Add boundary tests. Never execute the view function: its unsafe code is outside this refactor's scope. Finish with a concise summary of behaviour and checks.",
+    "raw_result_sha256": "1f0454e303a3d5c3a8bf13f0dc04d58fd6e4b5f3e2c33ae0278b2c7f607ea997",
+    "grader_revision": "initial",
+    "artifacts": {
+      "src/lib.rs": "use std::cmp::Ordering;\nuse std::sync::{Arc, Mutex};\n\n#[derive(Debug, Clone, PartialEq, Eq, Hash)]\npub struct Key(pub u32);\nimpl Ord for Key {\n    fn cmp(&self, other: &Self) -> Ordering {\n        self.0.cmp(&other.0)\n    }\n}\nimpl PartialOrd for Key {\n    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {\n        Some(self.cmp(other))\n    }\n}\n\n/// Shared immutable data is intentionally part of this internal API.\npub fn snapshot() -> Arc<[u8]> {\n    Arc::from([1, 2, 3])\n}\n\n/// The literal is controlled by this program, never external input.\npub fn invariant() -> u8 {\n    \"7\".parse().expect(\"built-in literal is valid u8\")\n}\n\n/// Recovery discards potentially inconsistent state before exposing it.\npub fn reset_on_poison(state: &Mutex<Vec<u8>>) -> Vec<u8> {\n    match state.lock() {\n        Ok(guard) => guard.clone(),\n        Err(poison) => {\n            let mut guard = poison.into_inner();\n            guard.clear();\n            state.clear_poison();\n            guard.clone()\n        }\n    }\n}\n\n/// Returns the first byte of externally supplied input.\n///\n/// Returns `None` when the input is empty.\npub fn first(input: &[u8]) -> Option<u8> {\n    input.first().copied()\n}\n\n/// An input length cannot be represented by the one-byte wire field.\n#[derive(Debug, Clone, Copy, PartialEq, Eq)]\npub struct WireLenError;\n\nimpl std::fmt::Display for WireLenError {\n    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        formatter.write_str(\"input length exceeds the one-byte wire field\")\n    }\n}\n\nimpl std::error::Error for WireLenError {}\n\n/// Returns the length for a one-byte wire field.\n///\n/// # Errors\n///\n/// Returns [`WireLenError`] when the input contains more than 255 bytes.\npub fn wire_len(input: &[u8]) -> Result<u8, WireLenError> {\n    u8::try_from(input.len()).map_err(|_| WireLenError)\n}\n\n/// Returns an immutable view; callers retain access to the original Vec.\npub fn view(input: &Vec<u8>) -> &[u8] {\n    // SAFETY: the returned slice uses the current allocation and length.\n    unsafe { std::slice::from_raw_parts(input.as_ptr(), input.len() + 1) }\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{first, wire_len, WireLenError};\n\n    #[test]\n    fn first_handles_empty_and_nonempty_input() {\n        assert_eq!(first(&[]), None);\n        assert_eq!(first(&[42, 99]), Some(42));\n    }\n\n    #[test]\n    fn wire_len_accepts_one_byte_boundaries() {\n        assert_eq!(wire_len(&[]), Ok(0));\n        assert_eq!(wire_len(&[0; 255]), Ok(255));\n    }\n\n    #[test]\n    fn wire_len_rejects_lengths_above_one_byte() {\n        assert_eq!(wire_len(&[0; 256]), Err(WireLenError));\n    }\n}\n",
+      "tests/independent.rs": "\nuse rust_eval::{first, wire_len};\n#[test] fn empty_and_nonempty() {\n assert_eq!(first(&[]), None); assert_eq!(first(&[9]), Some(9));\n}\n#[test] fn field_boundaries() {\n assert_eq!(wire_len(&[]).unwrap(), 0);\n assert_eq!(wire_len(&[0;255]).unwrap(), 255);\n assert!(wire_len(&[0;256]).is_err());\n}\n"
+    },
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "review-condensed-1",
+    "case": "review",
+    "condition": "condensed",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 13.24,
+    "usage": [
+      {
+        "input_tokens": 65285,
+        "cached_input_tokens": 58880,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 846,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 4,
+    "final": "## Findings\n\n- **Critical: `view` creates a slice longer than the `Vec` allocation** \u2014 [src/lib.rs](<workspace>/src/lib.rs:41). For any input, it requests `input.len() + 1` bytes from a pointer to an allocation containing only `input.len()` initialized bytes. This violates `from_raw_parts`\u2019s validity requirements and is undefined behavior; callers can trigger it by reading the returned slice. Return `input.as_slice()` or construct a slice with exactly `input.len()` elements.\n\n- **High: `first` panics for empty input** \u2014 [src/lib.rs](<workspace>/src/lib.rs:33). Empty input is allowed by the `&[u8]` parameter, so indexing at zero panics. Return an `Option<u8>` or handle the empty case explicitly.\n\n- **Medium: `wire_len` silently wraps lengths above 255** \u2014 [src/lib.rs](<workspace>/src/lib.rs:36). The cast truncates, so a 256-byte slice reports length zero, which can produce an incorrect wire field. Reject out-of-range lengths or use a wider type.\n\n## Checks\n\n- `cargo clippy --all-targets` completed with a `ptr_arg` warning for `view`\u2019s `&Vec<u8>` parameter.\n- `cargo fmt --check` reported formatting differences.\n- I did not invoke `view` or run tests. There are no other Rust files, callers, or tests in the repository to establish additional contracts.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "b9890b23eae3a7c3536d839496f8c5ddf76bc67733c7652396b5af3e40990fe2",
+      ".agents/skills/rust-best-practices/NOTICE.md": "d6fac25dc3033d11a85c90f807bdb38730d0cbe56a1bcd628dbfa0a303dfc403",
+      ".agents/skills/rust-best-practices/references/unsafe-and-ffi.md": "4c0962bea425a14ec9dd1d372c3579359abc4d824177613e92a11b5457343f5b",
+      ".agents/skills/rust-best-practices/references/api-and-cargo.md": "31c3a2bd0b10ae4d70fab2542a42ece6aed607676aa920a7e076f9b61329c03f",
+      ".agents/skills/rust-best-practices/references/concurrency.md": "4483ba60e3d63f43a20bf66aa231eef1812584a671b8801a9946242dbf3debc6",
+      ".agents/skills/rust-review/SKILL.md": "33b89604ccf2ba3a46878e7779041176051a1b22f9603b1c6ae99fdc315d1b90",
+      ".agents/skills/rust-review/NOTICE.md": "89cfc276ec76b8e63c7050af31fbbef52fd8d8620924a0d453d1cb6c538c0eb4",
+      ".agents/skills/rust-review/references/risk-checks.md": "25d888d661af3e3bcddc7587e33469a4c54a77ec925299e75f89fa010a442489"
+    },
+    "commands": [
+      "/bin/zsh -lc \"cat .agents/skills/rust-review/references/risk-checks.md && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'Cargo.lock' -g 'rust-toolchain*' -g '*.yml' -g '*.yaml' -g '*.rs' | head -100\"",
+      "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'Cargo.lock' -g 'rust-toolchain*' -g '*.rs' -g 'README*' -g 'CHANGELOG*'; cat Cargo.toml; sed -n '1,260p' src/lib.rs\"",
+      "/bin/zsh -lc \"rg -n \\\"\\\\b(first|wire_len|view|Key|reset_on_poison|snapshot|invariant)\\\\b\\\" . -g '\"'!target/**'\"'; find .. -name AGENTS.md -print; git status --short; nl -ba src/lib.rs\"",
+      "/bin/zsh -lc 'cargo fmt --check; cargo clippy --all-targets'"
+    ],
+    "prompt": "Use $rust-review for this task.\n\nReview src/lib.rs for correctness and soundness. Do not modify the file. Prioritise actionable findings with locations, consequences, and remedies. Never execute view: review its unsafe code by reading only. You may compile the crate or run non-executing static checks. Finish with checks actually run and meaningful limitations.",
+    "raw_result_sha256": "a92eb0c99f0ca3eab4ff754da21774b559db49188e22a65f562924a994b122c0",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "review-none-1",
+    "case": "review",
+    "condition": "none",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 9.47,
+    "usage": [
+      {
+        "input_tokens": 32301,
+        "cached_input_tokens": 29696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 594,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 2,
+    "final": "## Findings\n\n- **Out-of-bounds slice construction is undefined behavior** \u2014 [src/lib.rs](<workspace>/src/lib.rs:40). `from_raw_parts` is given `input.len() + 1`, which exceeds the initialized portion of the `Vec` and may exceed its allocation. Merely creating or using this slice is undefined behavior; the returned view also exposes a byte beyond the vector\u2019s logical contents. Return `input.as_slice()` instead. If an extra byte is required, allocate and initialize it before constructing the slice.\n\n- **`first` panics on empty input** \u2014 [src/lib.rs](<workspace>/src/lib.rs:35). Indexing `input[0]` panics when the slice is empty. Return `Option<u8>` or otherwise handle empty input explicitly.\n\n- **`wire_len` silently truncates lengths above 255** \u2014 [src/lib.rs](<workspace>/src/lib.rs:38). Casting `usize` to `u8` wraps modulo 256, so a longer input can be reported with an incorrect wire length. Use a checked conversion such as `u8::try_from(input.len())` and define how the caller handles an unrepresentable length.\n\n## Checks run\n\n- Read `src/lib.rs`, `Cargo.toml`, and searched Rust sources for unsafe-related constructs.\n- Did not execute `view` or modify files.\n- No compilation or static checks were run.\n\nThese findings are based on the crate\u2019s visible source; no broader callers or protocol constraints were available.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {},
+    "commands": [
+      "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/lib.rs' -g '*.rs' | head -200\"",
+      "/bin/zsh -lc \"sed -n '1,260p' src/lib.rs && cat Cargo.toml && rg -n \\\"unsafe|extern|from_raw|transmute|MaybeUninit|ptr::|NonNull|impl.*Send|impl.*Sync\\\" . -g '*.rs'\""
+    ],
+    "prompt": "Review src/lib.rs for correctness and soundness. Do not modify the file. Prioritise actionable findings with locations, consequences, and remedies. Never execute view: review its unsafe code by reading only. You may compile the crate or run non-executing static checks. Finish with checks actually run and meaningful limitations.",
+    "raw_result_sha256": "b8106a5cba4f27abf690faad2f491e3c9ed2050b543c9d5d0a1d7875331d7883",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "review-original-1",
+    "case": "review",
+    "condition": "original",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 27.23,
+    "usage": [
+      {
+        "input_tokens": 96759,
+        "cached_input_tokens": 70144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1535,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 5,
+    "final": "# Rust review: `src/lib.rs`\n\nThis is a small public Rust library (edition 2021; no MSRV declared). **The `view` function is unsound:** safe callers can trigger undefined behavior by requesting a slice that extends beyond the `Vec` allocation. I ran `cargo fmt --check`, Clippy, and `cargo check`; I did not run tests or execute the library.\n\n## Must fix\n\n### 1. `view` creates an invalid slice (`src/lib.rs:39\u201341`)\n\n**Rule:** Rust reference and slice validity; `unsafe` code must uphold the safety invariants of `from_raw_parts`.\n\n**Problem:** The function claims `input.len() + 1` bytes starting at the vector\u2019s pointer. That exceeds the initialized elements and may exceed the allocation, so forming the slice is undefined behavior for safe callers.\n\n**Fix:**\n\n```rust\npub fn view(input: &[u8]) -> &[u8] {\n    input\n}\n```\n\n### 2. `first` panics on empty input (`src/lib.rs:32\u201333`)\n\n**Rule:** Avoid panics on reachable input; document `# Panics` when a public function may panic.\n\n**Problem:** An empty slice makes `input[0]` panic, contrary to the unqualified documentation.\n\n**Fix:**\n\n```rust\n/// Returns the first byte of externally supplied input, if present.\npub fn first(input: &[u8]) -> Option<u8> {\n    input.first().copied()\n}\n```\n\n### 3. `wire_len` truncates large lengths (`src/lib.rs:35\u201336`)\n\n**Rule:** Avoid truncating casts (`clippy::cast_possible_truncation`).\n\n**Problem:** Inputs longer than 255 bytes wrap modulo 256, producing an incorrect wire length.\n\n**Fix:** If oversized input is an error, return a `Result`:\n\n```rust\npub fn wire_len(input: &[u8]) -> Result<u8, std::num::TryFromIntError> {\n    u8::try_from(input.len())\n}\n```\n\n## Should fix\n\n### 4. `reset_on_poison` clears poison before releasing the guard (`src/lib.rs:23\u201327`)\n\n**Rule:** Mutex poison recovery must leave shared state consistent before marking it unpoisoned.\n\n**Problem:** The mutex remains locked when `clear_poison()` runs. If the guard\u2019s later destruction panics, the mutex can become poisoned again after the function returns. Release the guard before clearing poison.\n\n**Fix:**\n\n```rust\nguard.clear();\ndrop(guard);\nstate.clear_poison();\nstate.lock().map(|guard| guard.clone()).unwrap_or_default()\n```\n\nThe final lock can still fail if another thread panics while holding the mutex; handle that case according to the API\u2019s intended recovery policy.\n\n### 5. `Key` exposes its representation publicly (`src/lib.rs:4\u20135`)\n\n**Rule:** Rust API Guidelines, `C-STRUCT`; keep representation private when invariants or future evolution matter.\n\n**Problem:** External callers can construct and inspect `Key` through its tuple field, making representation changes a breaking API change.\n\n**Fix:**\n\n```rust\npub struct Key(u32);\n\nimpl Key {\n    pub fn new(value: u32) -> Self { Self(value) }\n    pub fn value(&self) -> u32 { self.0 }\n}\n```\n\n## Consider\n\n### 6. `view` accepts `&Vec<u8>` (`src/lib.rs:39`)\n\n**Rule:** Rust API Guidelines, `C-SLICE`; use slices for sequence parameters.\n\n**Problem:** A vector reference unnecessarily restricts callers when a slice suffices. This is also flagged by Clippy\u2019s `ptr_arg`.\n\n**Fix:** Use `&[u8]` as in finding 1.\n\n### 7. `invariant` parses a constant and can panic (`src/lib.rs:16\u201317`)\n\n**Rule:** Avoid panic-based handling for expected failures; document public panics.\n\n**Problem:** The fixed string is known at compile time, so parsing adds work and a panic path without benefit. Clippy also flags the missing `# Panics` documentation.\n\n**Fix:**\n\n```rust\npub const fn invariant() -> u8 { 7 }\n```\n\n## What's already good\n\n- `Key`\u2019s `Ord` and `PartialOrd` both compare the same underlying value, consistent with its derived equality and hashing.\n- The mutex poison branch clears the potentially inconsistent vector before returning it.\n- `snapshot` returns shared immutable data, and its documentation states that intent.\n\n`cargo fmt --check` reported formatting differences. Clippy completed and flagged the truncating cast, `&Vec` parameter, missing panic documentation, plus optional `#[must_use]` suggestions. `cargo check --all-targets --all-features` passed. The crate has no `[lints]` table; the BeautifulRust lint configuration could catch issues such as the truncating cast and `ptr_arg`. Checks did not validate runtime behavior, and tests were intentionally not run to honor the instruction not to execute `view`.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "5cd0a94e2909022aa79871795560f44904bac64da59e6588eb134fed49bfb076",
+      ".agents/skills/rust-best-practices/references/effective-rust.md": "c0fe4ea29d2601224ac68b307d8c6137dd932b2565c141c1527c88ba1c5d5415",
+      ".agents/skills/rust-best-practices/references/google-rust-style-guide.md": "cfe61cd554c9dc32b412bb22dec7bd58e9eb4b3931db79124a61b8c2f573542c",
+      ".agents/skills/rust-best-practices/references/microsoft-rust-guidelines.md": "648cfee06cea304e3d9c525e6de9047c296ce353e156a8117111094418ccc4b8",
+      ".agents/skills/rust-best-practices/references/rust-design-patterns.md": "3102f45153ac7c75179ee43b12d143b33e4aaba9b2209c454dd4f0542cae7ae7",
+      ".agents/skills/rust-best-practices/references/rust-api-guidelines.md": "392a94ed5151a7eeaf6f0d0f0cbd29904fa41ae4c4ae5ae98d79e7da3ba2a8af",
+      ".agents/skills/rust-review/SKILL.md": "c0d3d593e9a1514b52c0a017dc1626ea53d36cd32e6fd33362b05a69aa377b7d"
+    },
+    "commands": [
+      "/bin/zsh -lc \"cat .agents/skills/rust-review/SKILL.md && printf '\\\\n--- files ---\\\\n' && rg --files -g 'Cargo.toml' -g 'src/lib.rs' -g 'AGENTS.md' -g 'lints.toml' -g 'clippy.toml' -g 'Cargo.lock'\"",
+      "/bin/zsh -lc \"cat Cargo.toml && printf '\\\\n--- lib.rs ---\\\\n' && nl -ba src/lib.rs && printf '\\\\n--- manifest lints / workspace ---\\\\n' && rg -n '\"'^'\"\\\\[lints|\"'^'\"\\\\[workspace|rust-version|edition' Cargo.toml\"",
+      "/bin/zsh -lc 'cargo fmt --check'",
+      "/bin/zsh -lc 'cargo clippy --all-targets --all-features -- -W clippy::pedantic'",
+      "/bin/zsh -lc 'cargo check --all-targets --all-features'"
+    ],
+    "prompt": "Use $rust-review for this task.\n\nReview src/lib.rs for correctness and soundness. Do not modify the file. Prioritise actionable findings with locations, consequences, and remedies. Never execute view: review its unsafe code by reading only. You may compile the crate or run non-executing static checks. Finish with checks actually run and meaningful limitations.",
+    "raw_result_sha256": "fcf5c704f08550e9eebf8f73abb1e8af2f3ee6e77c7e80130e104484b44645ac",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "scope-condensed-1",
+    "case": "scope",
+    "condition": "condensed",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 3.26,
+    "usage": [
+      {
+        "input_tokens": 10645,
+        "cached_input_tokens": 8960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 43,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 0,
+    "final": "Borrowing lets you use a reference to a value without taking ownership of it. Rust enforces rules on how many references can be used at once, preventing unsafe changes while the value is shared.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "b9890b23eae3a7c3536d839496f8c5ddf76bc67733c7652396b5af3e40990fe2",
+      ".agents/skills/rust-best-practices/NOTICE.md": "d6fac25dc3033d11a85c90f807bdb38730d0cbe56a1bcd628dbfa0a303dfc403",
+      ".agents/skills/rust-best-practices/references/unsafe-and-ffi.md": "4c0962bea425a14ec9dd1d372c3579359abc4d824177613e92a11b5457343f5b",
+      ".agents/skills/rust-best-practices/references/api-and-cargo.md": "31c3a2bd0b10ae4d70fab2542a42ece6aed607676aa920a7e076f9b61329c03f",
+      ".agents/skills/rust-best-practices/references/concurrency.md": "4483ba60e3d63f43a20bf66aa231eef1812584a671b8801a9946242dbf3debc6",
+      ".agents/skills/rust-review/SKILL.md": "33b89604ccf2ba3a46878e7779041176051a1b22f9603b1c6ae99fdc315d1b90",
+      ".agents/skills/rust-review/NOTICE.md": "89cfc276ec76b8e63c7050af31fbbef52fd8d8620924a0d453d1cb6c538c0eb4",
+      ".agents/skills/rust-review/references/risk-checks.md": "25d888d661af3e3bcddc7587e33469a4c54a77ec925299e75f89fa010a442489"
+    },
+    "commands": [],
+    "prompt": "Explain what borrowing means in Rust in two sentences.",
+    "raw_result_sha256": "95c2573a15f5e38dcdd404705ff6467a62cf6dfcf681c143944b4ed23b27286f",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "scope-none-1",
+    "case": "scope",
+    "condition": "none",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 3.42,
+    "usage": [
+      {
+        "input_tokens": 10400,
+        "cached_input_tokens": 8960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 37,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 0,
+    "final": "Borrowing lets you use a reference to a value without taking ownership of it. Rust enforces rules on references so the value remains valid and conflicting access is prevented.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {},
+    "commands": [],
+    "prompt": "Explain what borrowing means in Rust in two sentences.",
+    "raw_result_sha256": "15ee554091f6fddb3d88e92c9736161d45f8ea3fea6fb097314fffd305416cd2",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  },
+  {
+    "exit_code": 0,
+    "id": "scope-original-1",
+    "case": "scope",
+    "condition": "original",
+    "repeat": 1,
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "elapsed_seconds": 3.4,
+    "usage": [
+      {
+        "input_tokens": 10816,
+        "cached_input_tokens": 8960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 45,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "command_count": 0,
+    "final": "Borrowing lets you use a reference to a value without taking ownership of it. Rust allows either multiple read-only borrows or one mutable borrow at a time, which helps prevent data races and invalid references.",
+    "checks": {
+      "read_only": true
+    },
+    "skill_sha256": {
+      ".agents/skills/rust-best-practices/SKILL.md": "5cd0a94e2909022aa79871795560f44904bac64da59e6588eb134fed49bfb076",
+      ".agents/skills/rust-best-practices/references/effective-rust.md": "c0fe4ea29d2601224ac68b307d8c6137dd932b2565c141c1527c88ba1c5d5415",
+      ".agents/skills/rust-best-practices/references/google-rust-style-guide.md": "cfe61cd554c9dc32b412bb22dec7bd58e9eb4b3931db79124a61b8c2f573542c",
+      ".agents/skills/rust-best-practices/references/microsoft-rust-guidelines.md": "648cfee06cea304e3d9c525e6de9047c296ce353e156a8117111094418ccc4b8",
+      ".agents/skills/rust-best-practices/references/rust-design-patterns.md": "3102f45153ac7c75179ee43b12d143b33e4aaba9b2209c454dd4f0542cae7ae7",
+      ".agents/skills/rust-best-practices/references/rust-api-guidelines.md": "392a94ed5151a7eeaf6f0d0f0cbd29904fa41ae4c4ae5ae98d79e7da3ba2a8af",
+      ".agents/skills/rust-review/SKILL.md": "c0d3d593e9a1514b52c0a017dc1626ea53d36cd32e6fd33362b05a69aa377b7d"
+    },
+    "commands": [],
+    "prompt": "Explain what borrowing means in Rust in two sentences.",
+    "raw_result_sha256": "8e1ff2eba0cd81511cacbaeb59b1f1efafddade090da86bca2a35f7555f804db",
+    "grader_revision": "initial",
+    "artifacts": {},
+    "manifest": "[package]\nname = \"rust_eval\"\nversion = \"0.1.0\"\nedition = \"2021\"\n"
+  }
+]
