@@ -9,8 +9,8 @@ This repository is a public catalogue of portable skills that follow the open Ag
 | Skill | Purpose |
 | --- | --- |
 | [`lazarus-mode`](skills/lazarus-mode) | Expert engineering rigor for implementation, review, testing, documentation, and release work. |
-| [`rust-best-practices`](skills/rust-best-practices) | Experimental Rust implementation guidance with concise core instructions and selectively loaded references. |
-| [`rust-review`](skills/rust-review) | Experimental Rust review guidance for evidence-backed correctness, safety, and compatibility findings; independently installable. |
+| [`rust-best-practices`](skills/rust-best-practices) | Rust implementation guidance with concise core instructions and selectively loaded references. |
+| [`rust-review`](skills/rust-review) | Rust review guidance for evidence-backed correctness, safety, and compatibility findings; independently installable. |
 | [`pr-splitter`](skills/pr-splitter) | Decompose oversized pull requests into dependency-aware, reviewable PRs while preserving their combined behaviour. |
 
 ## Clone the repository
@@ -107,8 +107,6 @@ skills/
     references/
       risk-checks.md
 ```
-
-The Rust adaptations are experimental; the preliminary comparison does not establish equivalent reliability or verification depth.
 
 The Rust skills use the same installation pattern above: substitute `rust-best-practices` or `rust-review` for `lazarus-mode`. Each can be installed separately; neither requires another skill. Optional host metadata is not required for their use.
 
