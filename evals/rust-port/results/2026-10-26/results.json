@@ -1,0 +1,148 @@
+[
+  {
+    "case": "c-bytes",
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "enabled_skills": [
+      "rust-port"
+    ],
+    "status": 0,
+    "error": null,
+    "prompt": "Use $rust-port to port pair.c/pair.h and test_pair.c into this Rust library crate. Preserve the byte-oriented behaviour and error precedence, including null input. The requested Rust API is parse_pair(input: Option<&[u8]>) -> Result<(u8, u16), ParseError>, with public ParseError::InvalidFormat and ParseError::Overflow variants. The C output pointers become the Rust return value, not FFI. Write PORTING.md and preserve the original source files.",
+    "usage": [
+      {
+        "input_tokens": 203544,
+        "cached_input_tokens": 178432,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2881,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "response": "Implemented the byte oriented `parse_pair` API with public `InvalidFormat` and `Overflow` errors, preserving null input handling and error precedence. Added Rust tests covering the original C assertions and precedence cases, and documented the port in [PORTING.md](<workspace>/PORTING.md). The original C files remain unchanged.\n\nVerification passed: the C assertions, `cargo fmt --check`, `cargo test`, and `cargo clippy --all-targets`.",
+    "original_tests_passed": true,
+    "checks": {
+      "contract_tests_passed": true,
+      "output": "\nrunning 2 tests\ntest tests::maps_original_c_assertions ... ok\ntest tests::preserves_format_and_overflow_precedence ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\ntest errors_and_precedence ... ok\ntest raw_keys_and_bounds ... ok\ntest public_error_contract ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Compiling rust_port_smoke v0.1.0 (<workspace>)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s\n     Running unittests src/lib.rs (target/debug/deps/rust_port_smoke-45fbbd667c21770b)\n     Running tests/__smoke_contract.rs (target/debug/deps/__smoke_contract-fd762429a803d660)\n   Doc-tests rust_port_smoke\n",
+      "porting_notes_present": true,
+      "original_sources_unchanged": true
+    },
+    "artifacts": {
+      "src/lib.rs": "//! Byte-oriented parser for a one-byte key and a `u16` decimal value.\n\n/// Errors returned by [`parse_pair`].\n#[derive(Clone, Copy, Debug, Eq, PartialEq)]\npub enum ParseError {\n    /// The input is absent or does not have the required `key=value` shape.\n    InvalidFormat,\n    /// The decimal value exceeds the range of a `u16`.\n    Overflow,\n}\n\nimpl core::fmt::Display for ParseError {\n    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {\n        match self {\n            Self::InvalidFormat => f.write_str(\"invalid pair format\"),\n            Self::Overflow => f.write_str(\"pair value overflows u16\"),\n        }\n    }\n}\n\nimpl std::error::Error for ParseError {}\n\n/// Parses a byte sequence as a one-byte key, `=`, and a decimal `u16` value.\n///\n/// The key may be any byte. The input must contain at least one digit and is\n/// treated as a byte sequence, not as text or a NUL-terminated string.\npub fn parse_pair(input: Option<&[u8]>) -> Result<(u8, u16), ParseError> {\n    let input = input.ok_or(ParseError::InvalidFormat)?;\n    if input.len() < 3 || input[1] != b'=' {\n        return Err(ParseError::InvalidFormat);\n    }\n\n    let mut number: u32 = 0;\n    for &byte in &input[2..] {\n        if !byte.is_ascii_digit() {\n            return Err(ParseError::InvalidFormat);\n        }\n        number = number * 10 + u32::from(byte - b'0');\n        if number > u32::from(u16::MAX) {\n            return Err(ParseError::Overflow);\n        }\n    }\n\n    Ok((input[0], number as u16))\n}\n\n#[cfg(test)]\nmod tests {\n    use super::{parse_pair, ParseError};\n\n    #[test]\n    fn maps_original_c_assertions() {\n        assert_eq!(parse_pair(Some(&[0xff, b'=', b'9'])), Ok((0xff, 9)));\n        assert_eq!(parse_pair(Some(b\"a=00\")), Ok((b'a', 0)));\n        assert_eq!(parse_pair(Some(b\"a=65535\")), Ok((b'a', u16::MAX)));\n        assert_eq!(parse_pair(None), Err(ParseError::InvalidFormat));\n        assert_eq!(parse_pair(Some(b\"a=\")), Err(ParseError::InvalidFormat));\n        assert_eq!(parse_pair(Some(b\"a=1x\")), Err(ParseError::InvalidFormat));\n        assert_eq!(parse_pair(Some(b\"a=65536\")), Err(ParseError::Overflow));\n        assert_eq!(parse_pair(Some(b\"a=655360x\")), Err(ParseError::Overflow));\n    }\n\n    #[test]\n    fn preserves_format_and_overflow_precedence() {\n        assert_eq!(parse_pair(Some(b\"a=65536x\")), Err(ParseError::Overflow));\n        assert_eq!(\n            parse_pair(Some(b\"a=1x65536\")),\n            Err(ParseError::InvalidFormat)\n        );\n        assert_eq!(parse_pair(Some(b\"==0\")), Ok((b'=', 0)));\n        assert_eq!(parse_pair(Some(b\"a=\\0\")), Err(ParseError::InvalidFormat));\n    }\n}\n",
+      "tests/__smoke_contract.rs": "use rust_port_smoke::{parse_pair, ParseError};\n#[test] fn public_error_contract() {\n fn accepts_error<E: std::error::Error>() {}\n accepts_error::<ParseError>();\n}\n#[test] fn raw_keys_and_bounds() {\n assert_eq!(parse_pair(Some(&[0xff, b'=', b'9'])).unwrap(), (0xff,9));\n assert_eq!(parse_pair(Some(&[0, b'=', b'0'])).unwrap(), (0,0));\n assert_eq!(parse_pair(Some(b\"a=00\")).unwrap(), (b'a',0));\n assert_eq!(parse_pair(Some(b\"a=65535\")).unwrap(), (b'a',65535));\n}\n#[test] fn errors_and_precedence() {\n assert!(matches!(parse_pair(None), Err(ParseError::InvalidFormat)));\n assert!(matches!(parse_pair(Some(b\"a=\")), Err(ParseError::InvalidFormat)));\n assert!(matches!(parse_pair(Some(b\"a=1x\")), Err(ParseError::InvalidFormat)));\n assert!(matches!(parse_pair(Some(b\"a=65536\")), Err(ParseError::Overflow)));\n assert!(matches!(parse_pair(Some(b\"a=655360x\")), Err(ParseError::Overflow)));\n}\n",
+      "PORTING.md": "# Porting notes\n\n## API and behavior\n\n`parse_pair(Option<&[u8]>) -> Result<(u8, u16), ParseError>` replaces the C\noutput pointers with a returned tuple. `None` represents the C null input and\nreturns `InvalidFormat`. `ParseError` is public and implements `Display` and\n`std::error::Error`.\n\nThe parser accepts any byte as the key, requires `=` at byte index 1 and at\nleast one ASCII decimal digit, and treats the input as a length-delimited byte\nsequence (including possible embedded NULs), not as UTF-8 or a C string.\nLeading zeroes remain accepted. It checks for a non-digit before adding that\nbyte; it reports `Overflow` as soon as a numeric prefix exceeds 65535. Thus an\noverflowing prefix followed by a non-digit is still `Overflow`, while a\nnon-digit before an overflowing prefix is `InvalidFormat`.\n\n## Test mapping\n\n`maps_original_c_assertions` covers every assertion in `test_pair.c`: arbitrary\nkey byte, leading zeroes, maximum value, null input, short input, invalid\ndigit, overflow, and overflow before a later invalid byte. Since Rust returns\nthe output tuple only on success, the C test that verifies output pointers are\nunchanged on error has no direct counterpart; no partial output escapes the\nRust `Result`.\n\n`preserves_format_and_overflow_precedence` adds the ordering cases where an\noverflowing prefix precedes an invalid byte and vice versa, plus delimiter as\na valid key and embedded NUL as an invalid digit.\n\n## Compatibility and verification\n\nThe C sources (`pair.c`, `pair.h`, and `test_pair.c`) are retained unchanged.\nNo unresolved behavior differences are known for the requested Rust API. The\noriginal C assertions were compiled and run with:\n\n```text\ncc -Wall -Wextra -Werror -std=c11 pair.c test_pair.c -o /tmp/c-bytes-test && /tmp/c-bytes-test\n```\n\nResult: passed. Rust checks also passed:\n\n- `cargo fmt --check`\n- `cargo test` (2 unit tests, 0 failures; doc tests passed)\n- `cargo clippy --all-targets` (no warnings)\n"
+    },
+    "skill_sha256": {
+      "LICENSE": "fe7214bea08bfb3d6b8c34841b54f7bc8ee84b080c83888aed9b0df321705d7c",
+      "SKILL.md": "ad92134e49023b5cc40348be8554502597829d91fbe16318bb00dd037eabd757",
+      "NOTICE.md": "3457522d809d9c5025e4e2f9781bda6f2cdfbd7f5cfcb70367e66b2d8a15236d",
+      "references/python.md": "e564852e48b296a582bc0447ea706fcf49a4c9468680002aafe51cfe711fa61a",
+      "references/go-and-javascript.md": "df2e0aff9ba528b1fcf1899983166741a1730739acff791456bab835518476b9",
+      "references/c-and-cpp.md": "d609c3b5a575278a281ef58a1cb5e8b30d80d1d28acfa38557a0ab010b866115"
+    },
+    "commands": [
+      {
+        "command": "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/**' -g 'pair.c' -g 'pair.h' -g 'test_pair.c' -g 'README*' -g 'PORTING.md' -g 'Makefile' -g 'build.rs' -g '*.yml' -g '*.yaml' -g '*.toml'\"",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cat .agents/skills/rust-port/references/c-and-cpp.md && cat Cargo.toml && cat src/lib.rs && cat pair.h && cat pair.c && cat test_pair.c && git status --short'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '*.md' -g '*.rs' -g 'Cargo.lock';\"",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cc -Wall -Wextra -Werror -std=c11 pair.c test_pair.c -o /tmp/c-bytes-test && /tmp/c-bytes-test'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo fmt --check && cargo test && cargo clippy --all-targets'",
+        "exit_code": 1
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo fmt && cargo fmt --check && cargo test && cargo clippy --all-targets'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo fmt --check && cargo test && cargo clippy --all-targets'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"git status --short && nl -ba src/lib.rs | sed -n '1,100p' && nl -ba PORTING.md | sed -n '1,100p'\"",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "case": "python-lines",
+    "model": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "enabled_skills": [
+      "rust-port"
+    ],
+    "status": 0,
+    "error": null,
+    "prompt": "Use $rust-port to port lines.py and test_lines.py into this Rust library crate with the same behaviour. Inputs are valid Unicode scalar text. The requested Rust API is split_nonempty(input: &str) -> Vec<String>. Write PORTING.md and preserve the original source files.",
+    "usage": [
+      {
+        "input_tokens": 135553,
+        "cached_input_tokens": 116224,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2113,
+        "reasoning_output_tokens": 0
+      }
+    ],
+    "response": "Ported `split_nonempty` to Rust with Python\u2019s full line separator set, CRLF handling, empty-line removal, and verbatim whitespace preservation. The original Python files are unchanged.\n\nAdded Rust tests mapped to all four original tests and documented the behavior and verification in [PORTING.md](<workspace>/PORTING.md). `cargo fmt --check`, `cargo clippy --all-targets`, `cargo test`, and the original Python tests passed.",
+    "original_tests_passed": true,
+    "checks": {
+      "contract_tests_passed": true,
+      "output": "\nrunning 4 tests\ntest tests::empty_lines_are_removed ... ok\ntest tests::other_control_characters_are_content ... ok\ntest tests::python_separators ... ok\ntest tests::whitespace_is_not_trimmed ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\ntest preservation_and_empty_input ... ok\ntest separators_and_unicode ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n   Compiling rust_port_smoke v0.1.0 (<workspace>)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s\n     Running unittests src/lib.rs (target/debug/deps/rust_port_smoke-45fbbd667c21770b)\n     Running tests/__smoke_contract.rs (target/debug/deps/__smoke_contract-fd762429a803d660)\n   Doc-tests rust_port_smoke\n",
+      "porting_notes_present": true,
+      "original_sources_unchanged": true
+    },
+    "artifacts": {
+      "src/lib.rs": "//! Split text into nonempty lines using Python's `str.splitlines` boundaries.\n\n/// Returns each nonempty line verbatim, using Python's `str.splitlines`\n/// separator set.\n///\n/// Recognized separators are LF, CR, CRLF, vertical tab, form feed, file/group/\n/// record separators (U+001C\u2013U+001E), NEL, line separator, and paragraph\n/// separator. A CRLF pair is one boundary. A terminal boundary does not create\n/// an extra trailing line, and whitespace within lines is preserved.\npub fn split_nonempty(input: &str) -> Vec<String> {\n    let mut lines = Vec::new();\n    let mut start = 0;\n    let mut chars = input.char_indices().peekable();\n\n    while let Some((index, ch)) = chars.next() {\n        if is_line_separator(ch) {\n            if start < index {\n                lines.push(input[start..index].to_owned());\n            }\n            if ch == '\\r' && chars.peek().is_some_and(|(_, next)| *next == '\\n') {\n                let (lf_index, lf) = chars.next().expect(\"peeked character exists\");\n                start = lf_index + lf.len_utf8();\n            } else {\n                start = index + ch.len_utf8();\n            }\n        }\n    }\n\n    if start < input.len() {\n        lines.push(input[start..].to_owned());\n    }\n    lines\n}\n\nfn is_line_separator(ch: char) -> bool {\n    matches!(\n        ch,\n        '\\n' | '\\r' | '\\x0b' | '\\x0c' | '\\x1c'..='\\x1e' | '\\u{0085}' | '\\u{2028}' | '\\u{2029}'\n    )\n}\n\n#[cfg(test)]\nmod tests {\n    use super::split_nonempty;\n\n    #[test]\n    fn python_separators() {\n        for separator in [\n            \"\\n\", \"\\r\", \"\\r\\n\", \"\\u{000b}\", \"\\u{000c}\", \"\\u{001c}\", \"\\u{001d}\", \"\\u{001e}\",\n            \"\\u{0085}\", \"\\u{2028}\", \"\\u{2029}\",\n        ] {\n            assert_eq!(\n                split_nonempty(&format!(\"a{separator}b{separator}\")),\n                [\"a\", \"b\"]\n            );\n        }\n    }\n\n    #[test]\n    fn whitespace_is_not_trimmed() {\n        assert_eq!(split_nonempty(\" a \\n \\nb \"), [\" a \", \" \", \"b \"]);\n    }\n\n    #[test]\n    fn empty_lines_are_removed() {\n        assert!(split_nonempty(\"\\n\\r\\n\").is_empty());\n        assert!(split_nonempty(\"\").is_empty());\n    }\n\n    #[test]\n    fn other_control_characters_are_content() {\n        assert_eq!(split_nonempty(\"a\\u{001f}b\"), [\"a\\u{001f}b\"]);\n    }\n}\n",
+      "tests/__smoke_contract.rs": "use rust_port_smoke::split_nonempty;\n#[test] fn separators_and_unicode() {\n for sep in [\"\\n\",\"\\r\",\"\\r\\n\",\"\\u{b}\",\"\\u{c}\",\"\\u{1c}\",\"\\u{1d}\",\"\\u{1e}\",\"\\u{85}\",\"\\u{2028}\",\"\\u{2029}\"] {\n  assert_eq!(split_nonempty(&format!(\"a{sep}b{sep}\")), vec![\"a\", \"b\"]);\n }\n assert_eq!(split_nonempty(\"\u00e9\\u{2028}\u4e2d\"), vec![\"\u00e9\", \"\u4e2d\"]);\n}\n#[test] fn preservation_and_empty_input() {\n assert_eq!(split_nonempty(\" a \\n \\nb \"), vec![\" a \", \" \", \"b \"]);\n assert!(split_nonempty(\"\\n\\r\\n\").is_empty());\n assert!(split_nonempty(\"\").is_empty());\n assert_eq!(split_nonempty(\"a\\u{1f}b\"), vec![\"a\\u{1f}b\"]);\n}\n",
+      "PORTING.md": "# Python to Rust port\n\n`lines.py` is preserved unchanged. The Rust library exposes\n`rust_port_smoke::split_nonempty(input: &str) -> Vec<String>` in `src/lib.rs`.\n\n## Behaviour mapping\n\nThe implementation matches Python's `str.splitlines()` separator set: LF,\nCR, CRLF, vertical tab, form feed, U+001C through U+001E, NEL, U+2028, and\nU+2029. CRLF is consumed as one separator. Empty fields are omitted, including\nthe field after a final separator; all other characters and whitespace are\ncopied verbatim. `&str` accepts valid UTF-8, so the input domain is Unicode\nscalar text as requested.\n\nEach assertion in `test_lines.py` is represented by a corresponding Rust unit\ntest in `src/lib.rs`:\n\n- `test_python_separators` checks every listed separator and trailing-boundary\n  behavior.\n- `test_whitespace_is_not_trimmed` checks verbatim preservation.\n- `test_empty_lines_are_removed` checks empty input and consecutive separators.\n- `test_other_control_characters_are_content` checks that U+001F is not a\n  separator.\n\nNo behavior differences or unresolved compatibility gaps are known for the\nspecified input domain.\n\n## Verification\n\n- `python3 -m unittest -v` \u2014 passed (4 original tests).\n- `cargo fmt --check` \u2014 passed.\n- `cargo clippy --all-targets` \u2014 passed.\n- `cargo test` \u2014 passed (4 unit tests; 0 doc tests).\n"
+    },
+    "skill_sha256": {
+      "LICENSE": "fe7214bea08bfb3d6b8c34841b54f7bc8ee84b080c83888aed9b0df321705d7c",
+      "SKILL.md": "ad92134e49023b5cc40348be8554502597829d91fbe16318bb00dd037eabd757",
+      "NOTICE.md": "3457522d809d9c5025e4e2f9781bda6f2cdfbd7f5cfcb70367e66b2d8a15236d",
+      "references/python.md": "e564852e48b296a582bc0447ea706fcf49a4c9468680002aafe51cfe711fa61a",
+      "references/go-and-javascript.md": "df2e0aff9ba528b1fcf1899983166741a1730739acff791456bab835518476b9",
+      "references/c-and-cpp.md": "d609c3b5a575278a281ef58a1cb5e8b30d80d1d28acfa38557a0ab010b866115"
+    },
+    "commands": [
+      {
+        "command": "/bin/zsh -lc \"pwd && rg --files -g 'AGENTS.md' -g 'Cargo.toml' -g 'src/**' -g 'lines.py' -g 'test_lines.py' -g 'README*' -g 'PORTING.md' -g 'pyproject.toml' -g 'requirements*' -g 'NOTICE.md' -g 'LICENSE'\"",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc \"cat lines.py && cat test_lines.py && cat Cargo.toml && cat src/lib.rs && rg --files -g 'AGENTS.md'\"",
+        "exit_code": 1
+      },
+      {
+        "command": "/bin/zsh -lc 'cat .agents/skills/rust-port/references/python.md && git status --short && python3 -m unittest -v'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo fmt --check'",
+        "exit_code": 1
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo clippy --all-targets'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo test'",
+        "exit_code": 0
+      },
+      {
+        "command": "/bin/zsh -lc 'cargo fmt && cargo fmt --check && cargo clippy --all-targets && cargo test'",
+        "exit_code": 0
+      }
+    ]
+  }
+]
