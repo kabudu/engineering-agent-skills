@@ -19,7 +19,7 @@ class CatalogueTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.skill = self.root/'skills/example'
         self.write('README.md', '# Skills\n\n[Example](skills/example)\n')
         self.write('skills/example/SKILL.md', '---\nname: example\ndescription: Validate a portable example.\n---\n\n# Example\n\n[Guide](references/guide.md)\n')
