@@ -1,0 +1,49 @@
+name: Check portable skills
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  skills:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.9', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python scripts/check_skills.py
+      - run: python -m unittest discover -s tests -v
+
+  rust-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
+      - run: rustup toolchain install stable --profile minimal
+      - run: python evals/rust/check_fixtures.py
+        env:
+          RUSTUP_TOOLCHAIN: stable
+      - name: Check porting source oracles
+        run: |
+          python -m unittest discover -s evals/rust-port/fixtures/python-lines -p 'test_*.py' -v
+          cc -std=c11 -Wall -Wextra -Werror evals/rust-port/fixtures/c-bytes/pair.c evals/rust-port/fixtures/c-bytes/test_pair.c -o "$RUNNER_TEMP/rust-port-original-tests"
+          "$RUNNER_TEMP/rust-port-original-tests"

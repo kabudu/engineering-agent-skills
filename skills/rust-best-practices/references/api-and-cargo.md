@@ -11,6 +11,7 @@ Read when changing externally consumed interfaces, crate dependencies, or featur
 - Keep failure types useful to consumers and preserve causes without exposing secrets. Changing errors, panic behaviour, bounds, ownership, or synchronous/asynchronous execution can affect compatibility even if the function name stays the same.
 - Inspect feature definitions, target-specific dependencies, `no_std`/`alloc` support, MSRV, and documented supported combinations. Prefer additive features for interoperable libraries. Test default and relevant alternate configurations; all features together may be invalid or miss minimal-feature bugs.
 - Reuse workspace dependency/lint policy. Assess new dependencies for maintenance, platform support, build scripts, proc macros, and MSRV cost. Preserve lockfiles according to project policy. Do not upgrade toolchains or dependencies incidentally.
+- Check that configured lints actually fire for the declared MSRV. Clippy can suppress MSRV-sensitive diagnostics even on a newer compiler: `allow_attributes` and `allow_attributes_without_reason` do not fire when the declared `rust-version` is below 1.81, where their `#[expect]`-based guidance is unavailable. Do not raise a project's MSRV just to enable these lints; use compatible policy and verify representative violations.
 - Run relevant public API integration tests, doctests, and documentation diagnostics. Missing-doc and warning failures require the appropriate lint configuration; `cargo doc` alone is not such a policy.
 
 Consult primary documentation when version-sensitive behaviour matters:
@@ -19,3 +20,5 @@ Consult primary documentation when version-sensitive behaviour matters:
 - [Cargo features](https://doc.rust-lang.org/cargo/reference/features.html)
 - [Cargo SemVer compatibility](https://doc.rust-lang.org/cargo/reference/semver.html)
 - [Rustdoc lints](https://doc.rust-lang.org/rustdoc/lints.html)
+
+MSRV-specific lint behaviour is documented in [BeautifulRust v1.4.0](https://github.com/morganlinton/BeautifulRust/blob/a2b22682fa69b5e2d41a5d041663df7d51aac521/lints/lints.toml); see also [Clippy allow_attributes](https://clippy.rust-lang.org/master/index.html#allow_attributes).

@@ -10,6 +10,7 @@ This repository is a public catalogue of portable skills that follow the open Ag
 | --- | --- |
 | [`lazarus-mode`](skills/lazarus-mode) | Expert engineering rigor for implementation, review, testing, documentation, and release work. |
 | [`rust-best-practices`](skills/rust-best-practices) | Rust implementation guidance with concise core instructions and selectively loaded references. |
+| [`rust-port`](skills/rust-port) | Port existing code to Rust with explicit compatibility contracts, traceable tests, and selectively loaded language guidance. |
 | [`rust-review`](skills/rust-review) | Rust review guidance for evidence-backed correctness, safety, and compatibility findings; independently installable. |
 | [`pr-splitter`](skills/pr-splitter) | Decompose oversized pull requests into dependency-aware, reviewable PRs while preserving their combined behaviour. |
 
@@ -100,6 +101,14 @@ skills/
       api-and-cargo.md
       concurrency.md
       unsafe-and-ffi.md
+  rust-port/
+    SKILL.md
+    LICENSE
+    NOTICE.md
+    references/
+      c-and-cpp.md
+      python.md
+      go-and-javascript.md
   rust-review/
     SKILL.md
     LICENSE
@@ -108,15 +117,34 @@ skills/
       risk-checks.md
 ```
 
-The Rust skills use the same installation pattern above: substitute `rust-best-practices` or `rust-review` for `lazarus-mode`. Each can be installed separately; neither requires another skill. Optional host metadata is not required for their use.
+The Rust skills use the same installation pattern above: substitute `rust-best-practices`, `rust-review`, or `rust-port` for `lazarus-mode`. Each can be installed separately; none requires another skill. Optional host metadata is not required for their use.
 
-Rust evaluation cases and comparison instructions live in [`evals/rust`](evals/rust). The [18-run preliminary report](evals/rust/RESULTS.md) records measured token usage, held-out checks, and verification gaps. Entrypoint compression is distinct from runtime savings; equivalent reliability is not established.
+Rust evaluation cases and comparison instructions live in [`evals/rust`](evals/rust). The [18-run preliminary report](evals/rust/RESULTS.md) records measured token usage, held-out checks, and verification gaps. Entrypoint compression is distinct from runtime savings; equivalent reliability is not established. That comparison covers the two original adaptations at its recorded revision, not `rust-port` or later reference changes.
 
 Each skill must have a `SKILL.md` entry point with valid `name` and `description` frontmatter.
 
+## Validate changes
+
+Install the development dependency and run the offline catalogue checks:
+
+```sh
+python3 -m pip install -r requirements-dev.txt
+python3 scripts/check_skills.py
+python3 -m unittest discover -s tests -v
+python3 evals/rust/check_fixtures.py
+```
+
+The catalogue checker needs Python 3.9+ and PyYAML. It validates portable frontmatter, README discovery links, local resources, reference reachability, and self-contained skill boundaries. Nested references are supported; links into sibling skills or outside the skill folder are rejected. It does not fetch remote links, run model evaluations, or require any agent/plugin installation. Use `--json` for structured diagnostics.
+
+The last command also needs Rust. It compiles the unsafe review fixture without executing it, runs the clean fixture's boundary tests, and checks packaging for all three Rust skills. These checks do not establish model effectiveness. The new [porting smoke cases](evals/rust-port/README.md) and [recorded results](evals/rust-port/RESULTS.md) test two focused compatibility boundaries without extending the historical benchmark claims.
+
+[CI](.github/workflows/check.yml) runs the catalogue checker and mutation tests on Python 3.9 and 3.14, plus the Rust fixture checks. Workflows use read-only permissions and pinned action revisions. Model evaluations remain explicit local runs and are not part of CI.
+
 ## Attribution
 
-The Rust skills adapt [BeautifulRust](https://github.com/morganlinton/BeautifulRust) by Morgan Linton under MIT. Each includes the original licence and a provenance notice recording the source revision and our changes.
+The Rust skills adapt [BeautifulRust](https://github.com/morganlinton/BeautifulRust) by Morgan Linton under MIT. Each includes the original licence and a provenance notice recording the source revision and our changes. `rust-port` follows upstream v1.4.0; the original two skills retain their historical source and benchmark pins.
+
+The portable checker was written for this repository, inspired by BeautifulRust's validation work contributed by [mvanhorn](https://github.com/mvanhorn). The MSRV clarification follows the lint-proof work credited to the same contributor in [BeautifulRust v1.4.0](https://github.com/morganlinton/BeautifulRust/blob/a2b22682fa69b5e2d41a5d041663df7d51aac521/CHANGELOG.md). Claude plugin packaging and the upstream source-guide digests are not redistributed.
 
 ## License
 
