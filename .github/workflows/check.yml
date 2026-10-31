@@ -47,3 +47,24 @@ jobs:
           python -m unittest discover -s evals/rust-port/fixtures/python-lines -p 'test_*.py' -v
           cc -std=c11 -Wall -Wextra -Werror evals/rust-port/fixtures/c-bytes/pair.c evals/rust-port/fixtures/c-bytes/test_pair.c -o "$RUNNER_TEMP/rust-port-original-tests"
           "$RUNNER_TEMP/rust-port-original-tests"
+
+  php-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - run: python evals/php/check_fixtures.py

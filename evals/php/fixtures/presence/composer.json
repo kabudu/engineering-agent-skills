@@ -1,0 +1,8 @@
+{
+  "name": "evaluation/presence",
+  "description": "Standalone PHP compatibility fixture",
+  "type": "project",
+  "license": "MIT",
+  "require": {"php": ">=8.2 <8.6"},
+  "config": {"platform": {"php": "8.2.0"}}
+}
