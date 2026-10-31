@@ -1,0 +1,1 @@
+Fix enabledNamesJson so filtering never turns its JSON list into an object. Preserve order, duplicate names, and exact strings. Input is an array of rows with string name and boolean enabled. Keep JsonException for unencodable names. Preserve the public signature and PHP range. Add regression coverage and explain the checks actually run.
