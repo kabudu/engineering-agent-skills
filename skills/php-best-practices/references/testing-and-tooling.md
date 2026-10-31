@@ -1,10 +1,10 @@
 # Testing and tooling
 
-Sources reviewed 2026-10-31. Prefer repository scripts and installed tool versions. Do not install a new toolchain or upgrade dependencies solely to satisfy a generic checklist.
+Sources reviewed 2026-10-31. Prefer repository scripts and installed tool versions. Checks can run entirely locally. CI is optional and provider-independent; use existing automation when present, and add or change CI only when requested. Do not install a new toolchain or upgrade dependencies solely to satisfy a generic checklist.
 
 ## Select checks by their evidence
 
-1. Inspect Composer scripts, test configuration, formatter rules, analysis configuration, CI, and available runtimes. Use the project's runner, whether PHPUnit, Pest, or another established tool.
+1. Inspect Composer scripts, test configuration, formatter rules, analysis configuration, available runtimes, and any existing CI. Use the project's runner, whether PHPUnit, Pest, or another established tool.
 2. Run syntax checks on affected PHP files with the intended interpreter. `php -l` checks syntax, not function availability, types, or behaviour. A successful check on the latest PHP does not prove older-runtime compatibility.
 3. Run focused behavioural tests, then affected integration checks. Test the minimum supported runtime and other relevant supported versions where available. Report unavailable runtime coverage rather than silently substituting the local interpreter.
 4. Run the configured PHPStan or Psalm checks and formatter in check mode for review. Respect baselines for existing debt; do not regenerate them or add suppressions to hide a regression. Use framework extensions/stubs already configured by the project.

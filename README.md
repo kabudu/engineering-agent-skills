@@ -129,7 +129,7 @@ The Rust skills use the same installation pattern above: substitute `rust-best-p
 
 Rust evaluation cases and comparison instructions live in [`evals/rust`](evals/rust). The [18-run preliminary report](evals/rust/RESULTS.md) records measured token usage, held-out checks, and verification gaps. Entrypoint compression is distinct from runtime savings; equivalent reliability is not established. That comparison covers the two original adaptations at its recorded revision, not `rust-port` or later reference changes.
 
-BeautifulPHP uses the same installation pattern: substitute `php-best-practices` for `lazarus-mode`. It is independently installable and follows the target project's PHP range, framework conventions, and tooling. Its [evaluation cases](evals/php/README.md) include executable boundary oracles; no model-effectiveness or token-savings results are claimed.
+BeautifulPHP uses the same installation pattern: substitute `php-best-practices` for `lazarus-mode`. It is independently installable, works with local validation without CI, and follows the target project's PHP range, framework conventions, and tooling. Its [evaluation cases](evals/php/README.md) include executable boundary oracles; no model-effectiveness or token-savings results are claimed.
 
 Each skill must have a `SKILL.md` entry point with valid `name` and `description` frontmatter.
 
@@ -151,7 +151,7 @@ The Rust fixture command also needs Rust. It compiles the unsafe review fixture 
 
 The PHP fixture checker needs PHP and verifies that held-out oracles reject buggy seeds and accept known repairs. Select a local interpreter with `--php /path/to/php`; this does not run a model.
 
-[CI](.github/workflows/check.yml) runs the catalogue checker and mutation tests on Python 3.9 and 3.14, plus the Rust fixture checks and PHP oracle checks across PHP 8.2 through 8.5. Workflows use read-only permissions and pinned action revisions. Model evaluations remain explicit local runs and are not part of CI.
+This catalogue uses [GitHub Actions](.github/workflows/check.yml) for its own checks; installed skills do not require GitHub Actions or any CI service. The workflow runs the catalogue checker and mutation tests on Python 3.9 and 3.14, plus the Rust fixture checks and PHP oracle checks across PHP 8.2 through 8.5. Workflows use read-only permissions and pinned action revisions. Model evaluations remain explicit local runs and are not part of CI.
 
 ## Attribution
 

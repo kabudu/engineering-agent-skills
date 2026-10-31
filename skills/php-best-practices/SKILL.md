@@ -9,7 +9,7 @@ Produce clear, idiomatic PHP that satisfies the requested behaviour on the proje
 
 ## Establish the target and contract
 
-Read affected code, tests, Composer manifests, analysis configuration, CI, containers, and deployment settings. Establish the supported PHP range, required extensions, framework version, and actual execution environment. Distinguish a library's consumer compatibility promise from an application's deployment target. A local interpreter or lockfile alone does not establish either.
+Read affected code, tests, Composer manifests, analysis configuration, and any existing CI, container, or deployment settings. Establish the supported PHP range, required extensions, framework version, and actual execution environment. Distinguish a library's consumer compatibility promise from an application's deployment target. A local interpreter or lockfile alone does not establish either.
 
 Reconcile conflicting version evidence before compatibility-sensitive edits. If the target is unresolved, state the uncertainty and ask for the missing decision while continuing independent work. Do not silently raise the minimum version, narrow the supported range, or bypass platform requirements. Check syntax, built-in APIs, dependencies, and deprecations against the full promised range. Read [compatibility](references/compatibility.md) when establishing a target, upgrading PHP, or using version-sensitive features.
 
@@ -28,7 +28,7 @@ Before refactoring, identify observable contracts: return values, exceptions, si
 
 ## Validate and review
 
-Use the project's documented formatter, analyser, and test commands. Follow existing PHPStan or Psalm configuration rather than imposing a new tool or maximum level. Preserve baseline debt without hiding new diagnostics. Follow the existing style; when none exists, use a target-compatible PHP-FIG PER Coding Style configuration. Do not reformat unrelated files.
+Run validation locally using the project's available formatter, analyser, and test commands. CI is optional; use the existing provider when present. Do not require GitHub Actions or introduce CI unless requested. Follow existing PHPStan or Psalm configuration rather than imposing a new tool or maximum level. Preserve baseline debt without hiding new diagnostics. Follow the existing style; when none exists, use a target-compatible PHP-FIG PER Coding Style configuration. Do not reformat unrelated files.
 
 Read [testing and tooling](references/testing-and-tooling.md) when selecting checks or changing validation configuration. Lint and run focused tests on the minimum supported PHP runtime and other relevant supported versions when available. Compatibility scanning and static analysis supplement runtime tests; they do not replace them. Verify required extensions and dependency platform requirements on the real execution environment.
 

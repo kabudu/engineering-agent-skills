@@ -4,7 +4,7 @@ Sources reviewed 2026-10-31. Verify current documentation when a task depends on
 
 ## Establish evidence
 
-Read root and relevant package Composer requirements, platform overrides, CI matrices, runtime images, deployment configuration, and analyser settings. Record supported versions separately from locally available versions. A broad constraint such as `^8.2` permits later PHP 8 releases; it is not evidence that only 8.2 matters. Do not derive the minimum from the developer's interpreter.
+Read root and relevant package Composer requirements, platform overrides, analyser settings, and any existing CI matrices, runtime images, or deployment configuration. Record supported versions separately from locally available versions. A broad constraint such as `^8.2` permits later PHP 8 releases; it is not evidence that only 8.2 matters. Do not derive the minimum from the developer's interpreter.
 
 Composer's platform override affects dependency resolution, not the interpreter executing the code. A successful install on a simulated platform proves neither syntax compatibility nor production extension availability. Use `composer check-platform-reqs` in the actual runtime; select production versus development dependencies according to the deployment. Do not bypass checks with ignore-platform flags to make validation pass.
 

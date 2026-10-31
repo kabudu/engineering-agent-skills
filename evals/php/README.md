@@ -34,4 +34,4 @@ These require separate realistic fixtures before use as scored cases:
 - A framework integration using its installed version, ORM hydration, and configured analyser extension. Check that generic design preferences do not replace supported framework behaviour.
 - Conflicting Composer, CI, and deployment targets, followed by a feature unavailable on the minimum runtime. Check explicit resolution of the conflict and actual minimum-runtime verification.
 
-No model benchmark has been run for BeautifulPHP. The two executable cases are narrow regression tasks, not coverage of every principle above. CI runs only the deterministic oracle checks.
+No model benchmark has been run for BeautifulPHP. The two executable cases are narrow regression tasks, not coverage of every principle above. This catalogue's optional automation runs only the deterministic oracle checks; the same checks run locally without GitHub Actions or any CI service.
